@@ -1,568 +1,373 @@
 <template>
-  <div class="app-container">
-    <div class="filter-container">
-      <!-- 选择title -->
-      <el-input
-        v-model="listQuery.title"
-        placeholder="姓名"
-        style="width: 200px;"
-        class="filter-item"
-        @keyup.enter.native="handleFilter"
-      />
-      <!-- 选择重要程度 -->
-      <el-select
-        v-model="listQuery.importance"
-        placeholder="Imp"
-        clearable
-        style="width: 90px"
-        class="filter-item"
-      >
-        <el-option v-for="item in importanceOptions" :key="item" :label="item" :value="item" />
-      </el-select>
-  
-      <el-button
-        v-waves
-        class="filter-item"
-        type="primary"
-        icon="el-icon-search"
-        @click="handleFilter"
-      >Search</el-button>
-      <el-button
-        class="filter-item"
-        style="margin-left: 10px;"
-        type="primary"
-        icon="el-icon-edit"
-        @click="handleCreate"
-      >Add</el-button>
-      <el-button
-        v-waves
-        :loading="downloadLoading"
-        class="filter-item"
-        type="primary"
-        icon="el-icon-download"
-        @click="handleDownload"
-      >Export</el-button>
-      <!-- <el-checkbox
-        v-model="showReviewer"
-        class="filter-item"
-        style="margin-left:15px;"
-        @change="tableKey=tableKey+1"
-      >reviewer</el-checkbox>-->
-    </div>
-
-    <!-- 表格区域 -->
-    <el-table
-      :key="tableKey"
-      v-loading="listLoading"
-      :data="list"
-      border
-      fit
-      highlight-current-row
-      style="width: 100%;"
-      @sort-change="sortChange"
-    >
-      <!-- id -->
-      <el-table-column
-        label="ID"
-        prop="id"
-        sortable="custom"
-        align="center"
-        width="80"
-        :class-name="getSortClass('id')"
-      >
-        <template slot-scope="{row}">
-          <span>{{ row.id }}</span>
-        </template>
-      </el-table-column>
-      <!-- 注册时间 -->
-      <el-table-column label="注册时间" width="150px" align="center">
-        <template slot-scope="{row}">
-          <span>{{ row.timestamp | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
-        </template>
-      </el-table-column>
-      <!-- 姓名 -->
-      <el-table-column label="姓名" width="110px" align="center">
-        <template slot-scope="{row}">
-          <span>{{ row.author }}</span>
-        </template>
-      </el-table-column>
-      <!-- 角色 -->
-      <el-table-column label="角色" align="center">
-        <template slot-scope="{row}">
-          <span class="link-type" @click="handleUpdate(row)">{{ row.title }}</span>
-          <!-- <el-tag>{{ row.type | typeFilter }}</el-tag> -->
-        </template>
-      </el-table-column>
-      <!-- 电话 -->
-      <el-table-column label="电话" width="110px" align="center">
-        <template slot-scope="{row}">
-          <span style="color:blue;">{{ row.tepL }}</span>
-        </template>
-      </el-table-column>
-      <!-- 重要程度 -->
-      <el-table-column label="Imp" width="80px">
-        <template slot-scope="{row}">
-          <svg-icon
-            v-for="n in + row.importance"
-            :key="n"
-            icon-class="star"
-            class="meta-item__icon"
-          />
-        </template>
-      </el-table-column>
-      <!--       
-      <el-table-column label="Readings" align="center" width="95">
-        <template slot-scope="{row}">
-          <span
-            v-if="row.pageviews"
-            class="link-type"
-            @click="handleFetchPv(row.pageviews)"
-          >{{ row.pageviews }}</span>
-          <span v-else>0</span>
-        </template>
-      </el-table-column>-->
-      <el-table-column label="状态" class-name="status-col" width="100">
-        <template slot-scope="{row}">
-          <el-tag :type="row.status | statusFilter">{{ row.status }}</el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column
-        label="操作"
-        align="center"
-        width="230"
-        class-name="small-padding fixed-width"
-      >
-        <template slot-scope="{row,$index}">
-          <el-button type="primary" size="mini" @click="handleUpdate(row)">Edit</el-button>
-          <el-button
-            v-if="row.status!='published'"
-            size="mini"
-            type="success"
-            @click="handleModifyStatus(row,'published')"
-          >Publish</el-button>
-          <el-button
-            v-if="row.status!='draft'"
-            size="mini"
-            @click="handleModifyStatus(row,'draft')"
-          >Draft</el-button>
-          <el-button
-            v-if="row.status!='deleted'"
-            size="mini"
-            type="danger"
-            @click="handleDelete(row,$index)"
-          >Delete</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-<!-- 分页组件 -->
-    <pagination
-      v-show="total>0"
-      :total="total"
-      :page.sync="listQuery.page"
-      :limit.sync="listQuery.limit"
-      @pagination="getList"
-    />
-<!-- 对话框 -->
-    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
-      <el-form
-        ref="dataForm"
-        :rules="rules"
-        :model="temp"
-        label-position="left"
-        label-width="70px"
-        style="width: 400px; margin-left:50px;"
-      >
-        <!-- <el-form-item label="Type" prop="type">
-          <el-select v-model="temp.type" class="filter-item" placeholder="Please select">
-            <el-option
-              v-for="item in calendarTypeOptions"
-              :key="item.key"
-              :label="item.display_name"
-              :value="item.key"
-            />
-          </el-select>
-        </el-form-item> -->
-          <el-form-item label="姓名" prop="author">
-          <el-input v-model="temp.author" />
-         </el-form-item>
-        <el-form-item label="Date" prop="timestamp">
-          <el-date-picker
-            v-model="temp.timestamp"
-            type="datetime"
-            placeholder="Please pick a date"
-          />
+  <div>
+    <!-- 卡片视图 -->
+    <el-card>
+      <!-- 添加角色按钮区域 -->
+      <el-row>
+        <el-col>
+          <el-button type="primary" @click="addDialogVisible = true">添加角色</el-button>
+        </el-col>
+      </el-row>
+      <!-- 角色列表区域 -->
+      <el-table :data="roleList" border stripe>
+        <el-table-column type="expand">
+          <template slot-scope="scope">
+            <el-row
+              :class="['bdbottom', index1 ===0 ? 'bdtop':'', 'vcenter']"
+              v-for="(item1, index1) in scope.row.children"
+              :key="item1.id"
+            >
+              <!-- 渲染一级权限 -->
+              <el-col :span="5">
+                <el-tag @close="removeRightById(scope.row, item1.id)" closable>{{item1.authName}}</el-tag>
+                <i class="el-icon-caret-right"></i>
+              </el-col>
+              <!-- 渲染二级和三级权限 -->
+              <el-col :span="19">
+                <!-- 通过for循环 嵌套渲染二级权限 -->
+                <el-row
+                  :class="['bdtop', index2 ===0 ? 'bdbottom':'', 'vcenter']"
+                  v-for="(item2, index2) in item1.children"
+                  :key="item2.id"
+                >
+                  <el-col :span="6">
+                    <el-tag
+                      type="success"
+                      @close="removeRightById(scope.row, item2.id)"
+                      closable
+                    >{{item2.authName}}</el-tag>
+                    <i class="el-icon-caret-right"></i>
+                  </el-col>
+                  <el-col :span="18">
+                    <el-tag
+                      @close="removeRightById(scope.row, item3.id)"
+                      closable
+                      type="warning"
+                      v-for="(item3) in item2.children"
+                      :key="item3.id"
+                    >{{item3.authName}}</el-tag>
+                  </el-col>
+                </el-row>
+              </el-col>
+            </el-row>
+          </template>
+        </el-table-column>
+        <el-table-column type="index" label="#"></el-table-column>
+        <el-table-column label="角色名称" prop="roleName"></el-table-column>
+        <el-table-column label="角色描述" prop="roleDesc"></el-table-column>
+        <el-table-column label="操作" width="300px">
+          <template slot-scope="scope">
+            <el-button
+              size="mini"
+              type="primary"
+              icon="el-icon-edit"
+              @click="showEditDialog(scope.row.id)"
+            >编辑</el-button>
+            <el-button
+              size="mini"
+              type="danger"
+              icon="el-icon-delete"
+              @click="removeUserByid(scope.row.id)"
+            >删除</el-button>
+            <el-button
+              size="mini"
+              type="warning"
+              icon="el-icon-setting"
+              @click="showSetRightDialog(scope.row)"
+            >分配权限</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-card>
+    <!-- 添加角色对话框 -->
+    <el-dialog title="添加角色" :visible.sync="addDialogVisible" width="50%" @close="addDialogClose">
+      <!-- 内容主体区域 -->
+      <el-form :model="addForm" :rules="addFormRules" ref="addFormRef" label-width="80px">
+        <el-form-item label="角色名" prop="roleName">
+          <el-input v-model="addForm.roleName"></el-input>
         </el-form-item>
-        <el-form-item label="角色" prop="title">
-          <el-input v-model="temp.title" />
-        </el-form-item>
-        <el-form-item label="Status">
-          <el-select v-model="temp.status" class="filter-item" placeholder="Please select">
-            <el-option v-for="item in statusOptions" :key="item" :label="item" :value="item" />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="Imp">
-          <el-rate
-            v-model="temp.importance"
-            :colors="['#99A9BF', '#F7BA2A', '#FF9900']"
-            :max="3"
-            style="margin-top:8px;"
-          />
-        </el-form-item>
-        <el-form-item label="Remark">
-          <el-input
-            v-model="temp.remark"
-            :autosize="{ minRows: 2, maxRows: 4}"
-            type="textarea"
-            placeholder="Please input"
-          />
+        <el-form-item label="角色描述" prop="roleDesc">
+          <el-input v-model="addForm.roleDesc"></el-input>
         </el-form-item>
       </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">Cancel</el-button>
-        <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">Confirm</el-button>
-      </div>
-    </el-dialog>
-
-    <el-dialog :visible.sync="dialogPvVisible" title="Reading statistics">
-      <el-table :data="pvData" border fit highlight-current-row style="width: 100%">
-        <el-table-column prop="key" label="Channel" />
-        <el-table-column prop="pv" label="Pv" />
-      </el-table>
+      <!-- 底部区域 -->
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="dialogPvVisible = false">Confirm</el-button>
+        <el-button @click="addDialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="addJuese">确 定</el-button>
+      </span>
+    </el-dialog>
+    <!-- 修改角色的对话框 -->
+    <el-dialog title="修改角色" :visible.sync="EditDialogVisible" width="50%" @close="editDialogClose">
+      <!-- 内容主体区域 -->
+      <el-form :model="EditForm" :rules="EditFormRules" ref="EditFormRef" label-width="80px">
+        <el-form-item label="角色名" prop="roleName">
+          <el-input v-model="EditForm.roleName"></el-input>
+        </el-form-item>
+        <el-form-item label="角色描述" prop="roleDesc">
+          <el-input v-model="EditForm.roleDesc"></el-input>
+        </el-form-item>
+      </el-form>
+      <!-- 底部区域 -->
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="EditDialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="EditJuese">确 定</el-button>
+      </span>
+    </el-dialog>
+    <!-- 分配权限的对话框 -->
+    <el-dialog
+      title="分配权限"
+      :visible.sync="setRightDialogVisible"
+      width="50%"
+      @close="setRightDialogClose"
+    >
+      <!-- 树形控件 -->
+      <el-tree
+        show-checkbox
+        :data="rightsList"
+        :props="treeProps"
+        ref="treeRef"
+        node-key="id"
+        default-expand-all
+        :default-checked-keys="defKeys"
+      ></el-tree>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="setRightDialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="allotRights">确 定</el-button>
       </span>
     </el-dialog>
   </div>
 </template>
 
 <script>
-import {
-  fetchList,
-  fetchPv,
-  createArticle,
-  updateArticle,
-} from "@/api/article";
-import waves from "@/directive/waves"; // waves directive
-import { parseTime } from "@/utils";
-import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
-
-const calendarTypeOptions = [
-  { key: "CN", display_name: "China" },
-  { key: "US", display_name: "USA" },
-  { key: "JP", display_name: "Japan" },
-  { key: "EU", display_name: "Eurozone" },
-];
-
-// arr to obj, such as { CN : "China", US : "USA" }
-const calendarTypeKeyValue = calendarTypeOptions.reduce((acc, cur) => {
-  acc[cur.key] = cur.display_name;
-  return acc;
-}, {});
-
 export default {
-  name: "ComplexTable",
-  components: { Pagination },
-  directives: { waves },
-  filters: {
-    statusFilter(status) {
-      const statusMap = {
-        published: "success",
-        draft: "info",
-        deleted: "danger",
-      };
-      return statusMap[status];
-    },
-    typeFilter(type) {
-      return calendarTypeKeyValue[type];
-    },
-  },
   data() {
     return {
-      tableKey: 0,
-      list: [
-        {
-          author: "付永杰",
-          comment_disabled: true,
-          id: 1,
-          importance: 3,
-          status: "draft",
-          // timestamp: Date.parse(new Date()),
-          timestamp: 1599484603000,
-          title: "智箱云路后台系统超级管理员",
-          tepL: "16639199716",
-        },
-        {
-          author: "梅嘉豪",
-          comment_disabled: true,
-          id: 2,
-          importance: 3,
-          pageviews: 758,
-          status: "draft",
-          // timestamp: Date.parse(new Date()),
-          timestamp: 1599484603000,
-          title: "智箱云路后台系统超级管理员",
-          tepL: "16639199713",
-        },
-        {
-          author: "马菀君",
-          comment_disabled: true,
-          id: 3,
-          importance: 2,
-          status: "draft",
-          // timestamp: Date.parse(new Date()),
-          timestamp: 1599484603000,
-          title: "智箱云路后台系统管理员",
-          tepL: "18080956629",
-        },
-        {
-          author: "张京",
-          comment_disabled: true,
-          id: 4,
-          importance: 2,
-          status: "draft",
-          // timestamp: Date.parse(new Date()),
-          timestamp: 1599484603000,
-          title: "智箱云路后台系统管理员",
-          tepL: "16639199718",
-        },
-        {
-          author: "董嘉欣",
-          comment_disabled: true,
-          id: 5,
-          importance: 2,
-          pageviews: 758,
-          status: "draft",
-          // timestamp: Date.parse(new Date()),
-          timestamp: 1599484603000,
-          title: "智箱云路后台系统管理员",
-          tepL: "16639199719",
-        },
-        {
-          author: "申跨杰",
-          comment_disabled: true,
-          id: 6,
-          importance: 2,
-          pageviews: 758,
-          status: "draft",
-          // timestamp: Date.parse(new Date()),
-          timestamp: 1599484603000,
-          title: "智箱云路后台系统管理员",
-          tepL: "16639199715",
-        },
+      // 所有角色列表数据
+      roleList: [
+        { id: 43, roleDesc: "智箱云路后台系统超级管理员", roleName: "超级管理员" },
+        { id: 44, roleDesc: "智箱云路后台系统管理员", roleName: "管理员" },
+        { id: 45, roleDesc: "员工", roleName: "工人" },
       ],
-      total: 0,
-      listLoading: true,
-      listQuery: {
-        page: 1,
-        limit: 20,
-        importance: undefined,
-        title: undefined,
-        type: undefined,
-        sort: "+id",
+      EditForm: {},
+      // 所有权限的数据
+      rightsList: [],
+      // 默认选中的id值数组
+      defKeys: [],
+      addDialogVisible: false,
+      EditDialogVisible: false,
+      // 分配权限对话框的显示和隐藏
+      setRightDialogVisible: false,
+      addForm: {
+        roleName: "",
+        roleDesc: "",
       },
-      importanceOptions: [1, 2, 3],
-      calendarTypeOptions,
-      sortOptions: [
-        { label: "ID Ascending", key: "+id" },
-        { label: "ID Descending", key: "-id" },
-      ],
-      statusOptions: ["published", "draft", "deleted"],
-      showReviewer: false,
-      temp: {
-        id: undefined,
-        importance: 1,
-        remark: "",
-        timestamp: new Date(),
-        title: "",
-        type: "",
-        status: "published",
+      treeProps: {
+        children: "children",
+        label: "authName",
       },
-      dialogFormVisible: false,
-      dialogStatus: "",
-      textMap: {
-        update: "Edit",
-        create: "Create",
-      },
-      dialogPvVisible: false,
-      pvData: [],
-      rules: {
-        author: [
-          { required: true, message: "type is required", trigger: "change" },
-        ],
-        timestamp: [
+      addFormRules: {
+        roleName: [
+          { required: true, message: "请输入角色名", trigger: "blur" },
           {
-            type: "date",
-            required: true,
-            message: "timestamp is required",
-            trigger: "change",
+            min: 2,
+            max: 10,
+            message: "用户名的长度在2-10之间",
+            trigger: "blur",
           },
         ],
-        title: [
-          { required: true, message: "title is required", trigger: "blur" },
+        roleDesc: [
+          { required: true, message: "请输入角色描述", trigger: "blur" },
+          { min: 2, max: 5, message: "密码的长度在2-5之间", trigger: "blur" },
         ],
       },
-      downloadLoading: false,
+      EditFormRules: {
+        roleName: [
+          { required: true, message: "请输入角色名", trigger: "blur" },
+          { min: 2, max: 5, message: "角色名的长度在2-5之间", trigger: "blur" },
+        ],
+        roleDesc: [
+          { required: true, message: "请输入角色描述", trigger: "blur" },
+          { min: 2, max: 6, message: "角色的长度在2-6之间", trigger: "blur" },
+        ],
+      },
+      roleId: "",
     };
   },
   created() {
-    this.getList();
+    this.getRoleList();
   },
   methods: {
-    getList() {
-      this.listLoading = true;
-      fetchList(this.listQuery).then((response) => {
-        // this.list = response.data.items;
-        // console.log(this.list);
-        // this.total = response.data.total;
-        this.total = 6;
-        // console.log(this.list[0].timestamp);
-
-        // Just to simulate the time of the request
-        setTimeout(() => {
-          this.listLoading = false;
-        }, 1.5 * 1000);
-      });
-    },
-    handleFilter() {
-      this.listQuery.page = 1;
-      this.getList();
-    },
-    handleModifyStatus(row, status) {
-      this.$message({
-        message: "操作Success",
-        type: "success",
-      });
-      row.status = status;
-    },
-    sortChange(data) {
-      const { prop, order } = data;
-      if (prop === "id") {
-        this.sortByID(order);
+    async getRoleList() {
+      // 获取所有角色列表
+      const { data: res } = await this.$http.get("roles");
+      if (res.meta.status !== 200) {
+        return this.$message.error("获取角色列表失败");
       }
+      this.roleList = res.data;
+      console.log(this.roleList);
     },
-    sortByID(order) {
-      if (order === "ascending") {
-        this.listQuery.sort = "+id";
-      } else {
-        this.listQuery.sort = "-id";
+    addJuese() {
+      // 点击按钮,添加新角色
+      this.$refs.addFormRef.validate(async (valid) => {
+        // console.log(valid)
+        if (!valid) return false;
+        // 可以发起添加角色的网络请求
+        const { data } = await this.$http.post("roles", this.addForm);
+        if (data.meta.status !== 201) return this.$message.error("添加失败");
+        this.$message.success("添加角色成功");
+        // 隐藏添加角色的对话框
+        this.addDialogVisible = false;
+        // 重新获取角色列表数据
+        this.getRoleList();
+      });
+    },
+    async showEditDialog(id) {
+      // 展示编辑的对话框
+      console.log(id);
+      const { data } = await this.$http.get("roles/" + id);
+      if (data.meta.status !== 200) {
+        return this.$message.error("查询用户信息失败");
       }
-      this.handleFilter();
+      this.EditForm = data.data;
+      console.log("xxxx", this.EditForm);
+      this.EditDialogVisible = true;
     },
-    resetTemp() {
-      this.temp = {
-        id: undefined,
-        importance: 1,
-        remark: "",
-        timestamp: new Date(),
-        title: "",
-        status: "published",
-        type: "",
-      };
-    },
-    handleCreate() {
-      this.resetTemp();
-      this.dialogStatus = "create";
-      this.dialogFormVisible = true;
-      this.$nextTick(() => {
-        this.$refs["dataForm"].clearValidate();
-      });
-    },
-    createData() {
-      this.$refs["dataForm"].validate((valid) => {
-        if (valid) {
-          this.temp.id = parseInt(Math.random() * 100) + 1024; // mock a id
-          this.temp.author = "vue-element-admin";
-          createArticle(this.temp).then(() => {
-            this.list.unshift(this.temp);
-            this.dialogFormVisible = false;
-            this.$notify({
-              title: "Success",
-              message: "Created Successfully",
-              type: "success",
-              duration: 2000,
-            });
-          });
-        }
-      });
-    },
-    handleUpdate(row) {
-      this.temp = Object.assign({}, row); // copy obj
-      this.temp.timestamp = new Date(this.temp.timestamp);
-      this.dialogStatus = "update";
-      this.dialogFormVisible = true;
-      this.$nextTick(() => {
-        this.$refs["dataForm"].clearValidate();
-      });
-    },
-    updateData() {
-      this.$refs["dataForm"].validate((valid) => {
-        if (valid) {
-          const tempData = Object.assign({}, this.temp);
-          tempData.timestamp = +new Date(tempData.timestamp); // change Thu Nov 30 2017 16:41:05 GMT+0800 (CST) to 1512031311464
-          updateArticle(tempData).then(() => {
-            const index = this.list.findIndex((v) => v.id === this.temp.id);
-            this.list.splice(index, 1, this.temp);
-            this.dialogFormVisible = false;
-            this.$notify({
-              title: "Success",
-              message: "Update Successfully",
-              type: "success",
-              duration: 2000,
-            });
-          });
-        }
-      });
-    },
-    handleDelete(row, index) {
-      this.$notify({
-        title: "Success",
-        message: "Delete Successfully",
-        type: "success",
-        duration: 2000,
-      });
-      this.list.splice(index, 1);
-    },
-    handleFetchPv(pv) {
-      fetchPv(pv).then((response) => {
-        this.pvData = response.data.pvData;
-        this.dialogPvVisible = true;
-      });
-    },
-    handleDownload() {
-      this.downloadLoading = true;
-      import("@/vendor/Export2Excel").then((excel) => {
-        const tHeader = ["timestamp", "title", "type", "importance", "status"];
-        const filterVal = [
-          "timestamp",
-          "title",
-          "type",
-          "importance",
-          "status",
-        ];
-        const data = this.formatJson(filterVal);
-        excel.export_json_to_excel({
-          header: tHeader,
-          data,
-          filename: "table-list",
+    EditJuese() {
+      // 点击按钮,修改角色信息并且提交
+      this.$refs.EditFormRef.validate(async (valid) => {
+        // console.log(valid)
+        if (!valid) return false;
+        // 可以发起修改用户的网络请求
+        const { data } = await this.$http.put("roles/" + this.EditForm.roleId, {
+          roleName: this.EditForm.roleName,
+          roleDesc: this.EditForm.roleDesc,
         });
-        this.downloadLoading = false;
+        if (data.meta.status !== 200) return this.$message.error("更新失败");
+        // 隐藏修改用户的对话框
+        this.EditDialogVisible = false;
+        // 重新获取用户列表数据
+        this.getRoleList();
+        // 提示修改成功
+        this.$message.success("更新用户信息成功");
       });
     },
-    formatJson(filterVal) {
-      return this.list.map((v) =>
-        filterVal.map((j) => {
-          if (j === "timestamp") {
-            return parseTime(v[j]);
-          } else {
-            return v[j];
-          }
-        })
-      );
+    async removeUserByid(id) {
+      // 根据id删除用户
+      // 弹框提示
+      const res = await this.$confirm(
+        "此操作将永久删除该角色, 是否继续?",
+        "提示",
+        {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning",
+        }
+      ).catch((err) => err);
+      // 如果用户确认删除  返回值为字符串confirm
+      // 如果用户取消了删除  返回值为字符串cancle
+      console.log(res);
+      if (res !== "confirm") {
+        return this.$message.info("已取消了删除");
+      }
+      const { data } = await this.$http.delete("roles/" + id);
+      if (data.meta.status !== 200) return this.$message.error("删除角色失败");
+      this.$message.success("删除角色成功");
+      // 重新获取用户列表数据
+      this.getRoleList();
     },
-    getSortClass: function (key) {
-      const sort = this.listQuery.sort;
-      return sort === `+${key}` ? "ascending" : "descending";
+    addDialogClose() {
+      // 监听添加角色对话框的关闭事件
+      this.$refs.addFormRef.resetFields();
+    },
+    editDialogClose() {
+      // 监听修改角色对话框的关闭事件
+      this.$refs.EditFormRef.resetFields();
+    },
+    // 监听分配权限对话框的关闭事件
+    setRightDialogClose() {
+      this.defKeys = [];
+    },
+    async removeRightById(role, rightid) {
+      // 根据id删除对应的权限
+      // 弹框提示用户是否是删除
+      const res = await this.$confirm(
+        "此操作将永久删除该角色, 是否继续?",
+        "提示",
+        {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning",
+        }
+      ).catch((err) => err);
+      if (res !== "confirm") {
+        return this.$message.info("已取消了删除");
+      }
+      const { data } = await this.$http.delete(
+        `roles/${role.id}/rights/${rightid}`
+      );
+      if (data.meta.status !== 200) return this.$message.error("删除权限失败");
+      this.$message.success("删除权限成功");
+      // 把服务器返回的最新的权限直接返回给角色的role
+      role.children = data.data;
+    },
+    // 展示分配权限的对话框
+    async showSetRightDialog(role) {
+      this.roleId = role.id;
+      //   获取所有权限的数据
+      const { data: res } = await this.$http.get("/rights/tree");
+      if (res.meta.status !== 200) {
+        return this.$message.error("获取权限列表失败");
+      }
+      this.rightsList = res.data;
+      console.log(this.rightsList);
+      this.getLeafKeys(role, this.defKeys);
+      this.setRightDialogVisible = true;
+    },
+    //  通过递归的形式：获取角色下所有的三级权限的id 并报存到defKeys
+    getLeafKeys(node, arr) {
+      if (!node.children) {
+        //  如果当前节点不包含children 属性 则是三级节点
+        return arr.push(node.id);
+      }
+      node.children.forEach((item) => {
+        this.getLeafKeys(item, arr);
+      });
+    },
+    //  点击为角色分配权限
+    async allotRights() {
+      const keys = [
+        ...this.$refs.treeRef.getCheckedKeys(),
+        ...this.$refs.treeRef.getHalfCheckedKeys(),
+      ]; // 两个数组合并成了一个新的数组 展开运算符有合并的意思
+      console.log(keys);
+      const idStr = keys.join(",");
+      const { data: res } = await this.$http.post(
+        `roles/${this.roleId}/rights`,
+        { rids: idStr }
+      );
+      if (res.meta.status !== 200) {
+        return this.$message.error("分配权限失败");
+      }
+      this.$message.success("分配权限成功");
+      this.getRoleList();
+      this.setRightDialogVisible = false;
     },
   },
 };
 </script>
+
+<style  scoped>
+.el-tag {
+  margin: 7px;
+}
+.bdtop {
+  border-top: 1px solid #eee;
+}
+.bdbottom {
+  border-bottom: 1px solid #eee;
+}
+.vcenter {
+  display: flex;
+  align-items: center;
+}
+</style>

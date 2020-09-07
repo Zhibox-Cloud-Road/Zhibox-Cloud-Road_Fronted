@@ -1,55 +1,5 @@
 <template>
   <div class="app-container">
-    <div class="filter-container">
-      <!-- 选择title -->
-      <el-input
-        v-model="listQuery.title"
-        placeholder="姓名"
-        style="width: 200px;"
-        class="filter-item"
-        @keyup.enter.native="handleFilter"
-      />
-      <!-- 选择重要程度 -->
-      <el-select
-        v-model="listQuery.importance"
-        placeholder="Imp"
-        clearable
-        style="width: 90px"
-        class="filter-item"
-      >
-        <el-option v-for="item in importanceOptions" :key="item" :label="item" :value="item" />
-      </el-select>
-  
-      <el-button
-        v-waves
-        class="filter-item"
-        type="primary"
-        icon="el-icon-search"
-        @click="handleFilter"
-      >Search</el-button>
-      <el-button
-        class="filter-item"
-        style="margin-left: 10px;"
-        type="primary"
-        icon="el-icon-edit"
-        @click="handleCreate"
-      >Add</el-button>
-      <el-button
-        v-waves
-        :loading="downloadLoading"
-        class="filter-item"
-        type="primary"
-        icon="el-icon-download"
-        @click="handleDownload"
-      >Export</el-button>
-      <!-- <el-checkbox
-        v-model="showReviewer"
-        class="filter-item"
-        style="margin-left:15px;"
-        @change="tableKey=tableKey+1"
-      >reviewer</el-checkbox>-->
-    </div>
-
     <!-- 表格区域 -->
     <el-table
       :key="tableKey"
@@ -63,11 +13,11 @@
     >
       <!-- id -->
       <el-table-column
-        label="ID"
+        label="员工ID"
         prop="id"
         sortable="custom"
         align="center"
-        width="80"
+       width="110px"
         :class-name="getSortClass('id')"
       >
         <template slot-scope="{row}">
@@ -75,7 +25,7 @@
         </template>
       </el-table-column>
       <!-- 注册时间 -->
-      <el-table-column label="注册时间" width="150px" align="center">
+      <el-table-column label="注册时间" align="center">
         <template slot-scope="{row}">
           <span>{{ row.timestamp | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
@@ -87,7 +37,7 @@
         </template>
       </el-table-column>
       <!-- 角色 -->
-      <el-table-column label="角色" align="center">
+      <el-table-column label="角色"  width="180px" align="center">
         <template slot-scope="{row}">
           <span class="link-type" @click="handleUpdate(row)">{{ row.title }}</span>
           <!-- <el-tag>{{ row.type | typeFilter }}</el-tag> -->
@@ -99,29 +49,7 @@
           <span style="color:blue;">{{ row.tepL }}</span>
         </template>
       </el-table-column>
-      <!-- 重要程度 -->
-      <el-table-column label="Imp" width="80px">
-        <template slot-scope="{row}">
-          <svg-icon
-            v-for="n in + row.importance"
-            :key="n"
-            icon-class="star"
-            class="meta-item__icon"
-          />
-        </template>
-      </el-table-column>
-      <!--       
-      <el-table-column label="Readings" align="center" width="95">
-        <template slot-scope="{row}">
-          <span
-            v-if="row.pageviews"
-            class="link-type"
-            @click="handleFetchPv(row.pageviews)"
-          >{{ row.pageviews }}</span>
-          <span v-else>0</span>
-        </template>
-      </el-table-column>-->
-      <el-table-column label="状态" class-name="status-col" width="100">
+      <el-table-column label="状态" class-name="status-col" width="120">
         <template slot-scope="{row}">
           <el-tag :type="row.status | statusFilter">{{ row.status }}</el-tag>
         </template>
@@ -281,18 +209,18 @@ export default {
       tableKey: 0,
       list: [
         {
-          author: "付永杰",
+          author: '白书博',
           comment_disabled: true,
           id: 1,
           importance: 3,
           status: "draft",
           // timestamp: Date.parse(new Date()),
           timestamp: 1599484603000,
-          title: "智箱云路后台系统超级管理员",
-          tepL: "16639199716",
+          title: "员工",
+          tepL: "15139172710",
         },
         {
-          author: "梅嘉豪",
+          author: "郭真",
           comment_disabled: true,
           id: 2,
           importance: 3,
@@ -300,55 +228,20 @@ export default {
           status: "draft",
           // timestamp: Date.parse(new Date()),
           timestamp: 1599484603000,
-          title: "智箱云路后台系统超级管理员",
-          tepL: "16639199713",
+          title: "员工",
+          tepL: "15139186293",
         },
         {
-          author: "马菀君",
+          author: "付思",
           comment_disabled: true,
           id: 3,
           importance: 2,
           status: "draft",
           // timestamp: Date.parse(new Date()),
           timestamp: 1599484603000,
-          title: "智箱云路后台系统管理员",
-          tepL: "18080956629",
-        },
-        {
-          author: "张京",
-          comment_disabled: true,
-          id: 4,
-          importance: 2,
-          status: "draft",
-          // timestamp: Date.parse(new Date()),
-          timestamp: 1599484603000,
-          title: "智箱云路后台系统管理员",
-          tepL: "16639199718",
-        },
-        {
-          author: "董嘉欣",
-          comment_disabled: true,
-          id: 5,
-          importance: 2,
-          pageviews: 758,
-          status: "draft",
-          // timestamp: Date.parse(new Date()),
-          timestamp: 1599484603000,
-          title: "智箱云路后台系统管理员",
-          tepL: "16639199719",
-        },
-        {
-          author: "申跨杰",
-          comment_disabled: true,
-          id: 6,
-          importance: 2,
-          pageviews: 758,
-          status: "draft",
-          // timestamp: Date.parse(new Date()),
-          timestamp: 1599484603000,
-          title: "智箱云路后台系统管理员",
-          tepL: "16639199715",
-        },
+          title: "员工",
+          tepL: "15139178745",
+        }
       ],
       total: 0,
       listLoading: true,
@@ -414,7 +307,7 @@ export default {
         // this.list = response.data.items;
         // console.log(this.list);
         // this.total = response.data.total;
-        this.total = 6;
+        this.total = 3;
         // console.log(this.list[0].timestamp);
 
         // Just to simulate the time of the request
