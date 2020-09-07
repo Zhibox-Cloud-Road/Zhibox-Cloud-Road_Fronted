@@ -62,7 +62,7 @@ export default {
         },
         xAxis: [{
           type: 'category',
-          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+          data: ['星期一', '星期二', '星期三', '星期四', '星期五', '星期六', '星期日'],
           axisTick: {
             alignWithLabel: true
           }
@@ -74,24 +74,43 @@ export default {
           }
         }],
         series: [{
-          name: 'pageA',
+          name: '可回收垃圾',
           type: 'bar',
           stack: 'vistors',
           barWidth: '60%',
+          backgroundStyle: {
+            color: 'rgb(64, 119, 191)'
+        },
           data: [79, 52, 200, 334, 390, 330, 220],
           animationDuration
         }, {
-          name: 'pageB',
+          name: '有害垃圾',
           type: 'bar',
           stack: 'vistors',
           barWidth: '60%',
+          backgroundStyle: {
+            color: '#d30019'
+        },
           data: [80, 52, 200, 334, 390, 330, 220],
           animationDuration
         }, {
-          name: 'pageC',
+          name: '厨余垃圾',
           type: 'bar',
           stack: 'vistors',
           barWidth: '60%',
+          backgroundStyle: {
+            color: '#359952'
+        },
+          data: [30, 52, 200, 334, 390, 330, 220],
+          animationDuration
+        }, {
+          name: '其他垃圾',
+          type: 'bar',
+          stack: 'vistors',
+          barWidth: '60%',
+          backgroundStyle: {
+            color: '#5a5c5b'
+        },
           data: [30, 52, 200, 334, 390, 330, 220],
           animationDuration
         }]

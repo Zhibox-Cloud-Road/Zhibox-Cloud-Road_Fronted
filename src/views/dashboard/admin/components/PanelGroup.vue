@@ -3,52 +3,60 @@
     <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
       <div class="card-panel" @click="handleSetLineChartData('newVisitis')">
         <div class="card-panel-icon-wrapper icon-people">
-          <svg-icon icon-class="peoples" class-name="card-panel-icon" />
+          <svg-icon icon-class="kehuishoulaji" class-name="card-panel-icon" />
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            New Visits
+            可回收垃圾
           </div>
-          <count-to :start-val="0" :end-val="102400" :duration="2600" class="card-panel-num" />
+          <count-to :start-val="0" :end-val="102400" :duration="2600"  class="card-panel-num" />
+          <span class="card-panel-num">吨</span>
+          <!-- <count-to :start-val='0' :end-val='2017' :duration='4000' :decimals='0' :separator=',' :prefix="¥" :suffix=' rmb' :autoplay=false > -->
         </div>
       </div>
     </el-col>
     <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
       <div class="card-panel" @click="handleSetLineChartData('messages')">
         <div class="card-panel-icon-wrapper icon-message">
-          <svg-icon icon-class="message" class-name="card-panel-icon" />
+          <svg-icon icon-class="youhailaji" class-name="card-panel-icon" />
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            Messages
+            有害垃圾
           </div>
           <count-to :start-val="0" :end-val="81212" :duration="3000" class="card-panel-num" />
+          <span class="card-panel-num">吨</span>
+
         </div>
       </div>
     </el-col>
     <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
       <div class="card-panel" @click="handleSetLineChartData('purchases')">
         <div class="card-panel-icon-wrapper icon-money">
-          <svg-icon icon-class="money" class-name="card-panel-icon" />
+          <svg-icon icon-class="chuyulaji" class-name="card-panel-icon" />
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            Purchases
+            厨余垃圾
           </div>
           <count-to :start-val="0" :end-val="9280" :duration="3200" class="card-panel-num" />
+          <span class="card-panel-num">吨</span>
+
         </div>
       </div>
     </el-col>
     <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
       <div class="card-panel" @click="handleSetLineChartData('shoppings')">
         <div class="card-panel-icon-wrapper icon-shopping">
-          <svg-icon icon-class="shopping" class-name="card-panel-icon" />
+          <svg-icon icon-class="qitalaji" class-name="card-panel-icon" />
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            Shoppings
+            其他垃圾
           </div>
-          <count-to :start-val="0" :end-val="13600" :duration="3600" class="card-panel-num" />
+          <count-to :start-val="0" :end-val="13600" :duration="3600"  class="card-panel-num" />
+          <span class="card-panel-num">吨</span>
+
         </div>
       </div>
     </el-col>
@@ -95,36 +103,36 @@ export default {
       }
 
       .icon-people {
-        background: #40c9c6;
+        background: #2f75bd;
       }
 
       .icon-message {
-        background: #36a3f7;
+        background: #d30019;
       }
 
       .icon-money {
-        background: #f4516c;
+        background: #359952;
       }
 
       .icon-shopping {
-        background: #34bfa3
+        background: #5a5c5b
       }
     }
 
     .icon-people {
-      color: #40c9c6;
+      color: #2f75bd;
     }
 
     .icon-message {
-      color: #36a3f7;
+      color: #d30019;
     }
 
     .icon-money {
-      color: #f4516c;
+      color: #359952;
     }
 
     .icon-shopping {
-      color: #34bfa3
+      color: #5a5c5b
     }
 
     .card-panel-icon-wrapper {

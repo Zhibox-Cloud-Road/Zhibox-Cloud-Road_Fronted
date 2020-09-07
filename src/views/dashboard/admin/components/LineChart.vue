@@ -1,3 +1,4 @@
+// 修改data请求函数，修改请求函数的生命周期
 <template>
   <div :class="className" :style="{height:height,width:width}" />
 </template>
@@ -64,7 +65,7 @@ export default {
     setOptions({ expectedData, actualData } = {}) {
       this.chart.setOption({
         xAxis: {
-          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+          data: ['星期一', '星期二', '星期三', '星期四', '星期五', '星期六', '星期日'],
           boundaryGap: false,
           axisTick: {
             show: false
@@ -90,10 +91,10 @@ export default {
           }
         },
         legend: {
-          data: ['expected', 'actual']
+          data: ['有害垃圾', '可回收垃圾','厨余垃圾','其他垃圾']
         },
         series: [{
-          name: 'expected', itemStyle: {
+          name: '有害垃圾', itemStyle: {
             normal: {
               color: '#FF005A',
               lineStyle: {
@@ -109,7 +110,7 @@ export default {
           animationEasing: 'cubicInOut'
         },
         {
-          name: 'actual',
+          name: '可回收垃圾',
           smooth: true,
           type: 'line',
           itemStyle: {
@@ -127,6 +128,38 @@ export default {
           data: actualData,
           animationDuration: 2800,
           animationEasing: 'quadraticOut'
+        },
+        {
+          name: '厨余垃圾', itemStyle: {
+            normal: {
+              color: '#359952',
+              lineStyle: {
+                color: '#359952',
+                width: 2
+              }
+            }
+          },
+          smooth: true,
+          type: 'line',
+          data: [60,150,120,90,150,100,110],
+          animationDuration: 2800,
+          animationEasing: 'cubicInOut'
+        },
+        {
+          name: '其他垃圾', itemStyle: {
+            normal: {
+              color: '#5a5c5b',
+              lineStyle: {
+                color: '#5a5c5b',
+                width: 2
+              }
+            }
+          },
+          smooth: true,
+          type: 'line',
+          data: [10,20,30,40,50,60,70],
+          animationDuration: 2800,
+          animationEasing: 'cubicInOut'
         }]
       })
     }

@@ -24,8 +24,8 @@ export default {
   },
   data() {
     return {
-      title: 'Vue Element Admin',
-      logo: 'https://wpimg.wallstcn.com/69a1c46c-eb1c-4b46-8bd4-e9e686ef5251.png'
+      title: '智箱云路',
+      logo: 'https://6e61-natto-jpg89-1301686020.tcb.qcloud.la/Zhibox/zhilogo.png?sign=9440bae1b0e2a9630d3004699d9a6a4b&t=1599419211'
     }
   }
 }
@@ -58,7 +58,7 @@ export default {
       width: 32px;
       height: 32px;
       vertical-align: middle;
-      margin-right: 12px;
+      margin-right: 14px;
     }
 
     & .sidebar-title {
