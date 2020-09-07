@@ -1,153 +1,568 @@
 <template>
   <div class="app-container">
-    <!-- Note that row-key is necessary to get a correct row order. -->
-    <el-table ref="dragTable" v-loading="listLoading" :data="list" row-key="id" border fit highlight-current-row style="width: 100%">
-      <el-table-column align="center" label="ID" width="65">
+    <div class="filter-container">
+      <!-- 选择title -->
+      <el-input
+        v-model="listQuery.title"
+        placeholder="姓名"
+        style="width: 200px;"
+        class="filter-item"
+        @keyup.enter.native="handleFilter"
+      />
+      <!-- 选择重要程度 -->
+      <el-select
+        v-model="listQuery.importance"
+        placeholder="Imp"
+        clearable
+        style="width: 90px"
+        class="filter-item"
+      >
+        <el-option v-for="item in importanceOptions" :key="item" :label="item" :value="item" />
+      </el-select>
+  
+      <el-button
+        v-waves
+        class="filter-item"
+        type="primary"
+        icon="el-icon-search"
+        @click="handleFilter"
+      >Search</el-button>
+      <el-button
+        class="filter-item"
+        style="margin-left: 10px;"
+        type="primary"
+        icon="el-icon-edit"
+        @click="handleCreate"
+      >Add</el-button>
+      <el-button
+        v-waves
+        :loading="downloadLoading"
+        class="filter-item"
+        type="primary"
+        icon="el-icon-download"
+        @click="handleDownload"
+      >Export</el-button>
+      <!-- <el-checkbox
+        v-model="showReviewer"
+        class="filter-item"
+        style="margin-left:15px;"
+        @change="tableKey=tableKey+1"
+      >reviewer</el-checkbox>-->
+    </div>
+
+    <!-- 表格区域 -->
+    <el-table
+      :key="tableKey"
+      v-loading="listLoading"
+      :data="list"
+      border
+      fit
+      highlight-current-row
+      style="width: 100%;"
+      @sort-change="sortChange"
+    >
+      <!-- id -->
+      <el-table-column
+        label="ID"
+        prop="id"
+        sortable="custom"
+        align="center"
+        width="80"
+        :class-name="getSortClass('id')"
+      >
         <template slot-scope="{row}">
           <span>{{ row.id }}</span>
         </template>
       </el-table-column>
-
-      <el-table-column width="180px" align="center" label="Date">
+      <!-- 注册时间 -->
+      <el-table-column label="注册时间" width="150px" align="center">
         <template slot-scope="{row}">
           <span>{{ row.timestamp | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
-
-      <el-table-column min-width="300px" label="Title">
-        <template slot-scope="{row}">
-          <span>{{ row.title }}</span>
-        </template>
-      </el-table-column>
-
-      <el-table-column width="110px" align="center" label="Author">
+      <!-- 姓名 -->
+      <el-table-column label="姓名" width="110px" align="center">
         <template slot-scope="{row}">
           <span>{{ row.author }}</span>
         </template>
       </el-table-column>
-
-      <el-table-column width="100px" label="Importance">
+      <!-- 角色 -->
+      <el-table-column label="角色" align="center">
         <template slot-scope="{row}">
-          <svg-icon v-for="n in + row.importance" :key="n" icon-class="star" class="icon-star" />
+          <span class="link-type" @click="handleUpdate(row)">{{ row.title }}</span>
+          <!-- <el-tag>{{ row.type | typeFilter }}</el-tag> -->
         </template>
       </el-table-column>
-
-      <el-table-column align="center" label="Readings" width="95">
+      <!-- 电话 -->
+      <el-table-column label="电话" width="110px" align="center">
         <template slot-scope="{row}">
-          <span>{{ row.pageviews }}</span>
+          <span style="color:blue;">{{ row.tepL }}</span>
         </template>
       </el-table-column>
-
-      <el-table-column class-name="status-col" label="Status" width="110">
+      <!-- 重要程度 -->
+      <el-table-column label="Imp" width="80px">
         <template slot-scope="{row}">
-          <el-tag :type="row.status | statusFilter">
-            {{ row.status }}
-          </el-tag>
+          <svg-icon
+            v-for="n in + row.importance"
+            :key="n"
+            icon-class="star"
+            class="meta-item__icon"
+          />
         </template>
       </el-table-column>
-
-      <el-table-column align="center" label="Drag" width="80">
-        <template slot-scope="{}">
-          <svg-icon class="drag-handler" icon-class="drag" />
+      <!--       
+      <el-table-column label="Readings" align="center" width="95">
+        <template slot-scope="{row}">
+          <span
+            v-if="row.pageviews"
+            class="link-type"
+            @click="handleFetchPv(row.pageviews)"
+          >{{ row.pageviews }}</span>
+          <span v-else>0</span>
+        </template>
+      </el-table-column>-->
+      <el-table-column label="状态" class-name="status-col" width="100">
+        <template slot-scope="{row}">
+          <el-tag :type="row.status | statusFilter">{{ row.status }}</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column
+        label="操作"
+        align="center"
+        width="230"
+        class-name="small-padding fixed-width"
+      >
+        <template slot-scope="{row,$index}">
+          <el-button type="primary" size="mini" @click="handleUpdate(row)">Edit</el-button>
+          <el-button
+            v-if="row.status!='published'"
+            size="mini"
+            type="success"
+            @click="handleModifyStatus(row,'published')"
+          >Publish</el-button>
+          <el-button
+            v-if="row.status!='draft'"
+            size="mini"
+            @click="handleModifyStatus(row,'draft')"
+          >Draft</el-button>
+          <el-button
+            v-if="row.status!='deleted'"
+            size="mini"
+            type="danger"
+            @click="handleDelete(row,$index)"
+          >Delete</el-button>
         </template>
       </el-table-column>
     </el-table>
-    <div class="show-d">
-      <el-tag>The default order :</el-tag> {{ oldList }}
-    </div>
-    <div class="show-d">
-      <el-tag>The after dragging order :</el-tag> {{ newList }}
-    </div>
+<!-- 分页组件 -->
+    <pagination
+      v-show="total>0"
+      :total="total"
+      :page.sync="listQuery.page"
+      :limit.sync="listQuery.limit"
+      @pagination="getList"
+    />
+<!-- 对话框 -->
+    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
+      <el-form
+        ref="dataForm"
+        :rules="rules"
+        :model="temp"
+        label-position="left"
+        label-width="70px"
+        style="width: 400px; margin-left:50px;"
+      >
+        <!-- <el-form-item label="Type" prop="type">
+          <el-select v-model="temp.type" class="filter-item" placeholder="Please select">
+            <el-option
+              v-for="item in calendarTypeOptions"
+              :key="item.key"
+              :label="item.display_name"
+              :value="item.key"
+            />
+          </el-select>
+        </el-form-item> -->
+          <el-form-item label="姓名" prop="author">
+          <el-input v-model="temp.author" />
+         </el-form-item>
+        <el-form-item label="Date" prop="timestamp">
+          <el-date-picker
+            v-model="temp.timestamp"
+            type="datetime"
+            placeholder="Please pick a date"
+          />
+        </el-form-item>
+        <el-form-item label="角色" prop="title">
+          <el-input v-model="temp.title" />
+        </el-form-item>
+        <el-form-item label="Status">
+          <el-select v-model="temp.status" class="filter-item" placeholder="Please select">
+            <el-option v-for="item in statusOptions" :key="item" :label="item" :value="item" />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="Imp">
+          <el-rate
+            v-model="temp.importance"
+            :colors="['#99A9BF', '#F7BA2A', '#FF9900']"
+            :max="3"
+            style="margin-top:8px;"
+          />
+        </el-form-item>
+        <el-form-item label="Remark">
+          <el-input
+            v-model="temp.remark"
+            :autosize="{ minRows: 2, maxRows: 4}"
+            type="textarea"
+            placeholder="Please input"
+          />
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">Cancel</el-button>
+        <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">Confirm</el-button>
+      </div>
+    </el-dialog>
+
+    <el-dialog :visible.sync="dialogPvVisible" title="Reading statistics">
+      <el-table :data="pvData" border fit highlight-current-row style="width: 100%">
+        <el-table-column prop="key" label="Channel" />
+        <el-table-column prop="pv" label="Pv" />
+      </el-table>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="dialogPvVisible = false">Confirm</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import { fetchList } from '@/api/article'
-import Sortable from 'sortablejs'
+import {
+  fetchList,
+  fetchPv,
+  createArticle,
+  updateArticle,
+} from "@/api/article";
+import waves from "@/directive/waves"; // waves directive
+import { parseTime } from "@/utils";
+import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
+
+const calendarTypeOptions = [
+  { key: "CN", display_name: "China" },
+  { key: "US", display_name: "USA" },
+  { key: "JP", display_name: "Japan" },
+  { key: "EU", display_name: "Eurozone" },
+];
+
+// arr to obj, such as { CN : "China", US : "USA" }
+const calendarTypeKeyValue = calendarTypeOptions.reduce((acc, cur) => {
+  acc[cur.key] = cur.display_name;
+  return acc;
+}, {});
 
 export default {
-  name: 'DragTable',
+  name: "ComplexTable",
+  components: { Pagination },
+  directives: { waves },
   filters: {
     statusFilter(status) {
       const statusMap = {
-        published: 'success',
-        draft: 'info',
-        deleted: 'danger'
-      }
-      return statusMap[status]
-    }
+        published: "success",
+        draft: "info",
+        deleted: "danger",
+      };
+      return statusMap[status];
+    },
+    typeFilter(type) {
+      return calendarTypeKeyValue[type];
+    },
   },
   data() {
     return {
-      list: null,
-      total: null,
+      tableKey: 0,
+      list: [
+        {
+          author: "付永杰",
+          comment_disabled: true,
+          id: 1,
+          importance: 3,
+          status: "draft",
+          // timestamp: Date.parse(new Date()),
+          timestamp: 1599484603000,
+          title: "智箱云路后台系统超级管理员",
+          tepL: "16639199716",
+        },
+        {
+          author: "梅嘉豪",
+          comment_disabled: true,
+          id: 2,
+          importance: 3,
+          pageviews: 758,
+          status: "draft",
+          // timestamp: Date.parse(new Date()),
+          timestamp: 1599484603000,
+          title: "智箱云路后台系统超级管理员",
+          tepL: "16639199713",
+        },
+        {
+          author: "马菀君",
+          comment_disabled: true,
+          id: 3,
+          importance: 2,
+          status: "draft",
+          // timestamp: Date.parse(new Date()),
+          timestamp: 1599484603000,
+          title: "智箱云路后台系统管理员",
+          tepL: "18080956629",
+        },
+        {
+          author: "张京",
+          comment_disabled: true,
+          id: 4,
+          importance: 2,
+          status: "draft",
+          // timestamp: Date.parse(new Date()),
+          timestamp: 1599484603000,
+          title: "智箱云路后台系统管理员",
+          tepL: "16639199718",
+        },
+        {
+          author: "董嘉欣",
+          comment_disabled: true,
+          id: 5,
+          importance: 2,
+          pageviews: 758,
+          status: "draft",
+          // timestamp: Date.parse(new Date()),
+          timestamp: 1599484603000,
+          title: "智箱云路后台系统管理员",
+          tepL: "16639199719",
+        },
+        {
+          author: "申跨杰",
+          comment_disabled: true,
+          id: 6,
+          importance: 2,
+          pageviews: 758,
+          status: "draft",
+          // timestamp: Date.parse(new Date()),
+          timestamp: 1599484603000,
+          title: "智箱云路后台系统管理员",
+          tepL: "16639199715",
+        },
+      ],
+      total: 0,
       listLoading: true,
       listQuery: {
         page: 1,
-        limit: 10
+        limit: 20,
+        importance: undefined,
+        title: undefined,
+        type: undefined,
+        sort: "+id",
       },
-      sortable: null,
-      oldList: [],
-      newList: []
-    }
+      importanceOptions: [1, 2, 3],
+      calendarTypeOptions,
+      sortOptions: [
+        { label: "ID Ascending", key: "+id" },
+        { label: "ID Descending", key: "-id" },
+      ],
+      statusOptions: ["published", "draft", "deleted"],
+      showReviewer: false,
+      temp: {
+        id: undefined,
+        importance: 1,
+        remark: "",
+        timestamp: new Date(),
+        title: "",
+        type: "",
+        status: "published",
+      },
+      dialogFormVisible: false,
+      dialogStatus: "",
+      textMap: {
+        update: "Edit",
+        create: "Create",
+      },
+      dialogPvVisible: false,
+      pvData: [],
+      rules: {
+        author: [
+          { required: true, message: "type is required", trigger: "change" },
+        ],
+        timestamp: [
+          {
+            type: "date",
+            required: true,
+            message: "timestamp is required",
+            trigger: "change",
+          },
+        ],
+        title: [
+          { required: true, message: "title is required", trigger: "blur" },
+        ],
+      },
+      downloadLoading: false,
+    };
   },
   created() {
-    this.getList()
+    this.getList();
   },
   methods: {
-    async getList() {
-      this.listLoading = true
-      const { data } = await fetchList(this.listQuery)
-      this.list = data.items
-      this.total = data.total
-      this.listLoading = false
-      this.oldList = this.list.map(v => v.id)
-      this.newList = this.oldList.slice()
-      this.$nextTick(() => {
-        this.setSort()
-      })
+    getList() {
+      this.listLoading = true;
+      fetchList(this.listQuery).then((response) => {
+        // this.list = response.data.items;
+        // console.log(this.list);
+        // this.total = response.data.total;
+        this.total = 6;
+        // console.log(this.list[0].timestamp);
+
+        // Just to simulate the time of the request
+        setTimeout(() => {
+          this.listLoading = false;
+        }, 1.5 * 1000);
+      });
     },
-    setSort() {
-      const el = this.$refs.dragTable.$el.querySelectorAll('.el-table__body-wrapper > table > tbody')[0]
-      this.sortable = Sortable.create(el, {
-        ghostClass: 'sortable-ghost', // Class name for the drop placeholder,
-        setData: function(dataTransfer) {
-          // to avoid Firefox bug
-          // Detail see : https://github.com/RubaXa/Sortable/issues/1012
-          dataTransfer.setData('Text', '')
-        },
-        onEnd: evt => {
-          const targetRow = this.list.splice(evt.oldIndex, 1)[0]
-          this.list.splice(evt.newIndex, 0, targetRow)
-
-          // for show the changes, you can delete in you code
-          const tempIndex = this.newList.splice(evt.oldIndex, 1)[0]
-          this.newList.splice(evt.newIndex, 0, tempIndex)
+    handleFilter() {
+      this.listQuery.page = 1;
+      this.getList();
+    },
+    handleModifyStatus(row, status) {
+      this.$message({
+        message: "操作Success",
+        type: "success",
+      });
+      row.status = status;
+    },
+    sortChange(data) {
+      const { prop, order } = data;
+      if (prop === "id") {
+        this.sortByID(order);
+      }
+    },
+    sortByID(order) {
+      if (order === "ascending") {
+        this.listQuery.sort = "+id";
+      } else {
+        this.listQuery.sort = "-id";
+      }
+      this.handleFilter();
+    },
+    resetTemp() {
+      this.temp = {
+        id: undefined,
+        importance: 1,
+        remark: "",
+        timestamp: new Date(),
+        title: "",
+        status: "published",
+        type: "",
+      };
+    },
+    handleCreate() {
+      this.resetTemp();
+      this.dialogStatus = "create";
+      this.dialogFormVisible = true;
+      this.$nextTick(() => {
+        this.$refs["dataForm"].clearValidate();
+      });
+    },
+    createData() {
+      this.$refs["dataForm"].validate((valid) => {
+        if (valid) {
+          this.temp.id = parseInt(Math.random() * 100) + 1024; // mock a id
+          this.temp.author = "vue-element-admin";
+          createArticle(this.temp).then(() => {
+            this.list.unshift(this.temp);
+            this.dialogFormVisible = false;
+            this.$notify({
+              title: "Success",
+              message: "Created Successfully",
+              type: "success",
+              duration: 2000,
+            });
+          });
         }
-      })
-    }
-  }
-}
+      });
+    },
+    handleUpdate(row) {
+      this.temp = Object.assign({}, row); // copy obj
+      this.temp.timestamp = new Date(this.temp.timestamp);
+      this.dialogStatus = "update";
+      this.dialogFormVisible = true;
+      this.$nextTick(() => {
+        this.$refs["dataForm"].clearValidate();
+      });
+    },
+    updateData() {
+      this.$refs["dataForm"].validate((valid) => {
+        if (valid) {
+          const tempData = Object.assign({}, this.temp);
+          tempData.timestamp = +new Date(tempData.timestamp); // change Thu Nov 30 2017 16:41:05 GMT+0800 (CST) to 1512031311464
+          updateArticle(tempData).then(() => {
+            const index = this.list.findIndex((v) => v.id === this.temp.id);
+            this.list.splice(index, 1, this.temp);
+            this.dialogFormVisible = false;
+            this.$notify({
+              title: "Success",
+              message: "Update Successfully",
+              type: "success",
+              duration: 2000,
+            });
+          });
+        }
+      });
+    },
+    handleDelete(row, index) {
+      this.$notify({
+        title: "Success",
+        message: "Delete Successfully",
+        type: "success",
+        duration: 2000,
+      });
+      this.list.splice(index, 1);
+    },
+    handleFetchPv(pv) {
+      fetchPv(pv).then((response) => {
+        this.pvData = response.data.pvData;
+        this.dialogPvVisible = true;
+      });
+    },
+    handleDownload() {
+      this.downloadLoading = true;
+      import("@/vendor/Export2Excel").then((excel) => {
+        const tHeader = ["timestamp", "title", "type", "importance", "status"];
+        const filterVal = [
+          "timestamp",
+          "title",
+          "type",
+          "importance",
+          "status",
+        ];
+        const data = this.formatJson(filterVal);
+        excel.export_json_to_excel({
+          header: tHeader,
+          data,
+          filename: "table-list",
+        });
+        this.downloadLoading = false;
+      });
+    },
+    formatJson(filterVal) {
+      return this.list.map((v) =>
+        filterVal.map((j) => {
+          if (j === "timestamp") {
+            return parseTime(v[j]);
+          } else {
+            return v[j];
+          }
+        })
+      );
+    },
+    getSortClass: function (key) {
+      const sort = this.listQuery.sort;
+      return sort === `+${key}` ? "ascending" : "descending";
+    },
+  },
+};
 </script>
-
-<style>
-.sortable-ghost{
-  opacity: .8;
-  color: #fff!important;
-  background: #42b983!important;
-}
-</style>
-
-<style scoped>
-.icon-star{
-  margin-right:2px;
-}
-.drag-handler{
-  width: 20px;
-  height: 20px;
-  cursor: pointer;
-}
-.show-d{
-  margin-top: 15px;
-}
-</style>
