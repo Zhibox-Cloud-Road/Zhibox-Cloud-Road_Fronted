@@ -10,38 +10,39 @@
         @keyup.enter.native="handleFilter"
       />
       <!-- 选择重要程度 -->
-      <el-select
+      <!-- <el-select
         v-model="listQuery.importance"
         placeholder="Imp"
         clearable
-        style="width: 90px"
+        style="width: 90px;margin-left: 10px;"
         class="filter-item"
       >
         <el-option v-for="item in importanceOptions" :key="item" :label="item" :value="item" />
       </el-select>
-  
+   -->
       <el-button
         v-waves
         class="filter-item"
+        style="margin-left: 10px;"
         type="primary"
         icon="el-icon-search"
         @click="handleFilter"
-      >Search</el-button>
+      >搜索</el-button>
       <el-button
         class="filter-item"
         style="margin-left: 10px;"
         type="primary"
-        icon="el-icon-edit"
+        icon="el-icon-plus"
         @click="handleCreate"
-      >Add</el-button>
-      <el-button
+      >添加</el-button>
+      <!-- <el-button
         v-waves
         :loading="downloadLoading"
         class="filter-item"
         type="primary"
         icon="el-icon-download"
         @click="handleDownload"
-      >Export</el-button>
+      >Export</el-button> -->
       <!-- <el-checkbox
         v-model="showReviewer"
         class="filter-item"
@@ -75,32 +76,34 @@
         </template>
       </el-table-column>
       <!-- 注册时间 -->
-      <el-table-column label="注册时间" width="150px" align="center">
+      <el-table-column label="投放日期" width="150px" align="center">
         <template slot-scope="{row}">
           <span>{{ row.timestamp | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
-      <!-- 姓名 -->
-      <el-table-column label="姓名" width="110px" align="center">
-        <template slot-scope="{row}">
-          <span>{{ row.author }}</span>
-        </template>
-      </el-table-column>
+      
       <!-- 角色 -->
-      <el-table-column label="角色" align="center">
+      <el-table-column label="坐标" align="center">
         <template slot-scope="{row}">
+          <i class="el-icon-location" style="margin-right: 5px;color: #1890ff"></i>
           <span class="link-type" @click="handleUpdate(row)">{{ row.title }}</span>
           <!-- <el-tag>{{ row.type | typeFilter }}</el-tag> -->
         </template>
       </el-table-column>
+      <!-- 姓名 -->
+      <el-table-column label="容量" width="110px" align="center">
+        <template slot-scope="{row}">
+          <span>{{ row.capacity }}</span>
+        </template>
+      </el-table-column>
       <!-- 电话 -->
-      <el-table-column label="电话" width="110px" align="center">
+      <!-- <el-table-column label="电话" width="110px" align="center">
         <template slot-scope="{row}">
           <span style="color:blue;">{{ row.tepL }}</span>
         </template>
-      </el-table-column>
+      </el-table-column> -->
       <!-- 重要程度 -->
-      <el-table-column label="Imp" width="80px">
+      <!-- <el-table-column label="Imp" width="80px">
         <template slot-scope="{row}">
           <svg-icon
             v-for="n in + row.importance"
@@ -109,7 +112,7 @@
             class="meta-item__icon"
           />
         </template>
-      </el-table-column>
+      </el-table-column> -->
       <!--       
       <el-table-column label="Readings" align="center" width="95">
         <template slot-scope="{row}">
@@ -133,35 +136,36 @@
         class-name="small-padding fixed-width"
       >
         <template slot-scope="{row,$index}">
-          <el-button type="primary" size="mini" @click="handleUpdate(row)">Edit</el-button>
+          <el-button type="primary" size="mini" @click="handleUpdate(row)">编辑</el-button>
           <el-button
-            v-if="row.status!='published'"
+            v-if="row.status!='已启动'"
             size="mini"
             type="success"
-            @click="handleModifyStatus(row,'published')"
-          >Publish</el-button>
+            @click="handleModifyStatus(row,'已启动')"
+          >启用</el-button>
           <el-button
-            v-if="row.status!='draft'"
+            v-if="row.status!='已停用'"
+            type="warning"
             size="mini"
-            @click="handleModifyStatus(row,'draft')"
-          >Draft</el-button>
+            @click="handleModifyStatus(row,'已停用')"
+          >停用</el-button>
           <el-button
             v-if="row.status!='deleted'"
             size="mini"
             type="danger"
             @click="handleDelete(row,$index)"
-          >Delete</el-button>
+          >删除</el-button>
         </template>
       </el-table-column>
     </el-table>
 <!-- 分页组件 -->
-    <pagination
+    <!-- <pagination
       v-show="total>0"
       :total="total"
       :page.sync="listQuery.page"
       :limit.sync="listQuery.limit"
       @pagination="getList"
-    />
+    /> -->
 <!-- 对话框 -->
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form
@@ -182,44 +186,28 @@
             />
           </el-select>
         </el-form-item> -->
-          <el-form-item label="姓名" prop="author">
-          <el-input v-model="temp.author" />
+          <el-form-item label="id" prop="id">
+          <el-input v-model="temp.id" />
          </el-form-item>
-        <el-form-item label="Date" prop="timestamp">
+        <el-form-item label="日期" prop="timestamp">
           <el-date-picker
             v-model="temp.timestamp"
             type="datetime"
             placeholder="Please pick a date"
           />
         </el-form-item>
-        <el-form-item label="角色" prop="title">
+        <el-form-item label="坐标" prop="title">
           <el-input v-model="temp.title" />
         </el-form-item>
-        <el-form-item label="Status">
+        <el-form-item label="状态">
           <el-select v-model="temp.status" class="filter-item" placeholder="Please select">
             <el-option v-for="item in statusOptions" :key="item" :label="item" :value="item" />
           </el-select>
         </el-form-item>
-        <el-form-item label="Imp">
-          <el-rate
-            v-model="temp.importance"
-            :colors="['#99A9BF', '#F7BA2A', '#FF9900']"
-            :max="3"
-            style="margin-top:8px;"
-          />
-        </el-form-item>
-        <el-form-item label="Remark">
-          <el-input
-            v-model="temp.remark"
-            :autosize="{ minRows: 2, maxRows: 4}"
-            type="textarea"
-            placeholder="Please input"
-          />
-        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">Cancel</el-button>
-        <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">Confirm</el-button>
+        <el-button @click="dialogFormVisible = false">取消</el-button>
+        <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">确定</el-button>
       </div>
     </el-dialog>
 
@@ -229,7 +217,7 @@
         <el-table-column prop="pv" label="Pv" />
       </el-table>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="dialogPvVisible = false">Confirm</el-button>
+        <el-button type="primary" @click="dialogPvVisible = false">确定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -266,8 +254,8 @@ export default {
   filters: {
     statusFilter(status) {
       const statusMap = {
-        published: "success",
-        draft: "info",
+        已启动: "success",
+        已停用: "warning",
         deleted: "danger",
       };
       return statusMap[status];
@@ -281,72 +269,72 @@ export default {
       tableKey: 0,
       list: [
         {
-          author: "付永杰",
+          capacity: "40%",
           comment_disabled: true,
           id: 1,
           importance: 3,
-          status: "draft",
+          status: "已启动",
           // timestamp: Date.parse(new Date()),
           timestamp: 1599484603000,
-          title: "智箱云路后台系统超级管理员",
+          title: "121.43333,34.50000",
           tepL: "16639199716",
         },
         {
-          author: "梅嘉豪",
+          capacity: "60%",
           comment_disabled: true,
           id: 2,
           importance: 3,
           pageviews: 758,
-          status: "draft",
+          status: "已停用",
           // timestamp: Date.parse(new Date()),
           timestamp: 1599484603000,
-          title: "智箱云路后台系统超级管理员",
+          title: "121.43333,34.50000",
           tepL: "16639199713",
         },
         {
-          author: "马菀君",
+          capacity: "80%",
           comment_disabled: true,
           id: 3,
           importance: 2,
-          status: "draft",
+          status: "已启动",
           // timestamp: Date.parse(new Date()),
           timestamp: 1599484603000,
-          title: "智箱云路后台系统管理员",
+          title: "121.43333,34.50000",
           tepL: "18080956629",
         },
         {
-          author: "张京",
+          capacity: "40%",
           comment_disabled: true,
           id: 4,
           importance: 2,
-          status: "draft",
+          status: "已停用",
           // timestamp: Date.parse(new Date()),
           timestamp: 1599484603000,
-          title: "智箱云路后台系统管理员",
+          title: "121.43333,34.50000",
           tepL: "16639199718",
         },
         {
-          author: "董嘉欣",
+          capacity: "20%",
           comment_disabled: true,
           id: 5,
           importance: 2,
           pageviews: 758,
-          status: "draft",
+          status: "已停用",
           // timestamp: Date.parse(new Date()),
           timestamp: 1599484603000,
-          title: "智箱云路后台系统管理员",
+          title: "121.43333,34.50000",
           tepL: "16639199719",
         },
         {
-          author: "申跨杰",
+          capacity: "60%",
           comment_disabled: true,
           id: 6,
           importance: 2,
           pageviews: 758,
-          status: "draft",
+          status: "已停用",
           // timestamp: Date.parse(new Date()),
           timestamp: 1599484603000,
-          title: "智箱云路后台系统管理员",
+          title: "121.43333,34.50000",
           tepL: "16639199715",
         },
       ],
@@ -366,7 +354,7 @@ export default {
         { label: "ID Ascending", key: "+id" },
         { label: "ID Descending", key: "-id" },
       ],
-      statusOptions: ["published", "draft", "deleted"],
+      statusOptions: ["已启动", "已停用", "deleted"],
       showReviewer: false,
       temp: {
         id: undefined,
@@ -375,7 +363,7 @@ export default {
         timestamp: new Date(),
         title: "",
         type: "",
-        status: "published",
+        status: "已启动",
       },
       dialogFormVisible: false,
       dialogStatus: "",
@@ -386,7 +374,7 @@ export default {
       dialogPvVisible: false,
       pvData: [],
       rules: {
-        author: [
+        capacity: [
           { required: true, message: "type is required", trigger: "change" },
         ],
         timestamp: [
@@ -420,7 +408,7 @@ export default {
         // Just to simulate the time of the request
         setTimeout(() => {
           this.listLoading = false;
-        }, 1.5 * 500);
+        }, 0);
       });
     },
     handleFilter() {
@@ -455,7 +443,7 @@ export default {
         remark: "",
         timestamp: new Date(),
         title: "",
-        status: "published",
+        status: "已启动",
         type: "",
       };
     },
@@ -471,7 +459,7 @@ export default {
       this.$refs["dataForm"].validate((valid) => {
         if (valid) {
           this.temp.id = parseInt(Math.random() * 100) + 1024; // mock a id
-          this.temp.author = "vue-element-admin";
+          this.temp.capacity = "vue-element-admin";
           createArticle(this.temp).then(() => {
             this.list.unshift(this.temp);
             this.dialogFormVisible = false;

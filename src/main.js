@@ -1,5 +1,8 @@
 import Vue from 'vue'
 
+import BaiduMap from 'vue-baidu-map'
+
+
 import Cookies from 'js-cookie'
 import './styles/global.css'
 
@@ -43,6 +46,11 @@ Vue.use(Element, {
 Object.keys(filters).forEach(key => {
   Vue.filter(key, filters[key])
 })
+Vue.use(BaiduMap, {
+  // ak 是在百度地图开发者平台申请的密钥 详见 http://lbsyun.baidu.com/apiconsole/key */
+  ak: 'c0eEdZuSTOeiAwybQPZlsNirB53FSFwG'
+})
+
 
 Vue.config.productionTip = false
 

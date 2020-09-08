@@ -19,11 +19,11 @@ export default {
     },
     width: {
       type: String,
-      default: '200px'
+      default: '300px'
     },
     height: {
       type: String,
-      default: '200px'
+      default: '300px'
     }
   },
   data() {
@@ -47,14 +47,14 @@ export default {
       const xData = (function() {
         const data = []
         for (let i = 1; i < 13; i++) {
-          data.push(i + 'month')
+          data.push(i + '月')
         }
         return data
       }())
       this.chart.setOption({
         backgroundColor: '#344b58',
         title: {
-          text: 'statistics',
+          text: '人员与垃圾量预测',
           x: '20',
           top: '20',
           textStyle: {
@@ -75,6 +75,7 @@ export default {
           }
         },
         grid: {
+          // 网格配置  grid可以控制线形图 柱状图 图表大小
           left: '5%',
           right: '5%',
           borderWidth: 0,
@@ -90,7 +91,8 @@ export default {
           textStyle: {
             color: '#90979c'
           },
-          data: ['female', 'male', 'average']
+          //todo series中有了name值这里的data可以删掉
+          // data: ['可回收', '有害','厨余垃圾','其他','人员预测']
         },
         calculable: true,
         xAxis: [{
@@ -162,7 +164,7 @@ export default {
           end: 35
         }],
         series: [{
-          name: 'female',
+          name: '可回收',
           type: 'bar',
           stack: 'total',
           barMaxWidth: 35,
@@ -183,7 +185,7 @@ export default {
             }
           },
           data: [
-            709,
+            609,
             1917,
             2455,
             2610,
@@ -199,7 +201,7 @@ export default {
         },
 
         {
-          name: 'male',
+          name: '有害',
           type: 'bar',
           stack: 'total',
           itemStyle: {
@@ -217,6 +219,38 @@ export default {
           },
           data: [
             327,
+            1336,
+            507,
+            1500,
+            800,
+            442,
+            204,
+            1390,
+            1200,
+            951,
+            381,
+            220
+          ]
+        },
+          {
+          name: '厨余',
+          type: 'bar',
+          stack: 'total',
+          itemStyle: {
+            normal: {
+              color: '#3e8fe2',
+              barBorderRadius: 0,
+              label: {
+                show: true,
+                position: 'top',
+                formatter(p) {
+                  return p.value > 0 ? p.value : ''
+                }
+              }
+            }
+          },
+          data: [
+            500,
             1776,
             507,
             1200,
@@ -227,10 +261,43 @@ export default {
             1001,
             951,
             381,
-            220
+            210
           ]
-        }, {
-          name: 'average',
+        },
+          {
+          name: '其他',
+          type: 'bar',
+          stack: 'total',
+          itemStyle: {
+            normal: {
+              color: '#6c56ef',
+              barBorderRadius: 0,
+              label: {
+                show: true,
+                position: 'top',
+                formatter(p) {
+                  return p.value > 0 ? p.value : ''
+                }
+              }
+            }
+          },
+          data: [
+            327,
+            1456,
+            456,
+            1100,
+            846,
+            452,
+            209,
+            1300,
+            960,
+            951,
+            381,
+            200
+          ]
+        },
+        {
+          name: '人流量',
           type: 'line',
           stack: 'total',
           symbolSize: 10,
