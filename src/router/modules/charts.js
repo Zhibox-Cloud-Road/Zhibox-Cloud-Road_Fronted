@@ -13,21 +13,21 @@ const chartsRouter = {
   },
   children: [
     {
-      path: 'mix-chart',
-      component: () => import('@/views/charts/mix-chart'),
-      name: 'MixChart',
+      path: 'heat_to_try',
+      component: () => import('@/views/charts/heat_to_try'),
+      name: 'Heat_to_try',
       meta: { title: '热力图', noCache: true }
     },
     {
-      path: 'mix-chart',
-      component: () => import('@/views/charts/mix-chart'),
-      name: 'MixChart',
+      path: 'analysis',
+      component: () => import('@/views/charts/analysis'),
+      name: 'Analysis',
       meta: { title: '预测分析', noCache: true }
     },
     {
-      path: 'mix-chart',
-      component: () => import('@/views/charts/mix-chart'),
-      name: 'MixChart',
+      path: 'List',
+      component: () => import('@/views/charts/List'),
+      name: 'List',
       meta: { title: '垃圾量年度排行榜', noCache: true }
     }
   ]
