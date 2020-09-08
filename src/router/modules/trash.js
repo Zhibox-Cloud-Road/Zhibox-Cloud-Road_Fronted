@@ -3,28 +3,49 @@
 import Layout from '@/layout'
 
 const trashRouter = {
-    path: '/tab',
-    component: Layout,
-    redirect: 'noRedirect',
-    name: 'Tab',
+  path: '/tab',
+  component: Layout,
+  redirect: 'noRedirect',
+  name: 'Tab',
+  meta: {
+    title: '智箱云路',
+    icon: 'tab'
+  },
+  children: [{
+    path: 'zhi-box',
+    component: () => import('@/views/tab/zhi-box'),
+    name: 'ZhiBox',
     meta: {
-      title: '智箱',
-      icon: 'tab'
+      title: '智箱'
+    }
+  },
+    
+   {
+      path: 'cloud-road',
+      component: () => import('@/views/tab/cloud-road'),
+      name: 'CloudRoad',
+      meta: {
+        title: '云路'
+      }
     }, 
-    children: [
-        {
-          path: 'lajixiang',
-          component: () => import('@/views/table/lajixiang'),
-          name: 'lajixiang',
-          meta: { title: '垃圾箱状态管理' }
-        },
-        {
-            path: 'drag-table',
-            component: () => import('@/views/table/drag-table'),
-            name: 'DragTable',
-            meta: { title: '权限管理' }
-          },
-      ]
+    {
+      path: 'box-info',
+      component: () => import('@/views/tab/box-info'),
+      name: 'BoxInfo',
+      meta: {
+        title: '智箱详情'
+      }
+    },
+
+    {
+      path: 'zhi-boxes-management',
+      component: () => import('@/views/tab/zhi-boxes-management'),
+      name: 'ZhiBoxesManagement',
+      meta: {
+        title: '智箱管理'
+      }
+    },
+  ]
 }
 
 export default trashRouter

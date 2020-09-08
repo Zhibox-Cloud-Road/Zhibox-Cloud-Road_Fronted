@@ -1,8 +1,10 @@
 <template>
   <div class="dashboard-editor-container">
     <!-- <github-corner class="github-corner" /> -->
-
+    <div style="margin-top: -15px;">
     <panel-group @handleSetLineChartData="handleSetLineChartData" />
+
+    </div>
 
     <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
       <line-chart :chart-data="lineChartData" />
@@ -27,7 +29,7 @@
     </el-row> -->
 
     <el-row :gutter="8">
-      <el-col :xs="{span: 24}" :sm="{span: 24}" :md="{span: 24}" :lg="{span: 12}" :xl="{span: 12}" style="padding-right:8px;margin-bottom:30px;">
+      <el-col :xs="{span: 24}" :sm="{span: 24}" :md="{span: 24}" :lg="{span: 12}" :xl="{span: 12}" style="padding-right:8px;margin-bottom:30px;margin-top:-14px;">
         <transaction-table />
       </el-col>
       <el-col :xs="24" :sm="24" :lg="12"  >
