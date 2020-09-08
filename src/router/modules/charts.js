@@ -23,14 +23,7 @@ const chartsRouter = {
       component: () => import('@/views/charts/analysis'),
       name: 'Analysis',
       meta: { title: '预测分析', noCache: true }
-    },
-    {
-      path: 'List',
-      component: () => import('@/views/charts/List'),
-      name: 'List',
-      meta: { title: '垃圾量年度排行榜', noCache: true }
-    }
-  ]
+    }]
 }
 
 export default chartsRouter
