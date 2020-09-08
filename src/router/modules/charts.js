@@ -16,13 +16,19 @@ const chartsRouter = {
       path: 'mix-chart',
       component: () => import('@/views/charts/mix-chart'),
       name: 'MixChart',
-      meta: { title: 'Mix Chart', noCache: true }
+      meta: { title: '热力图', noCache: true }
     },
     {
       path: 'mix-chart',
       component: () => import('@/views/charts/mix-chart'),
       name: 'MixChart',
-      meta: { title: 'Mix Chart', noCache: true }
+      meta: { title: '预测分析', noCache: true }
+    },
+    {
+      path: 'mix-chart',
+      component: () => import('@/views/charts/mix-chart'),
+      name: 'MixChart',
+      meta: { title: '垃圾量年度排行榜', noCache: true }
     }
   ]
 }

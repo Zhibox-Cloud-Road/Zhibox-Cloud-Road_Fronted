@@ -14,7 +14,7 @@ const trashRouter = {
     children: [
         {
           path: 'lajixiang',
-          component: () => import('@/views/table/lajixiang'),
+          component: () => import('@/views/tab/lajixiang'),
           name: 'lajixiang',
           meta: { title: '垃圾箱状态管理' }
         },
