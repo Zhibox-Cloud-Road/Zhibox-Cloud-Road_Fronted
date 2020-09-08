@@ -12,12 +12,7 @@ const tableRouter = {
     icon: 'table'
   },
   children: [
-    {
-      path: 'lajixiang',
-      component: () => import('@/views/table/lajixiang'),
-      name: 'lajixiang',
-      meta: { title: '垃圾箱状态管理' }
-    },
+   
     {
       path: 'drag-table',
       component: () => import('@/views/table/drag-table'),
