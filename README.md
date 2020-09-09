@@ -2,7 +2,7 @@
 
 ### 运行命令
 
-```
-先   npm install
+
+先  ```shell npm install```
 然后 npm run dev
-```
+
