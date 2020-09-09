@@ -83,6 +83,7 @@ export default {
   min-height: 275px;
 }
 .zhiBox-line {
+  overflow: hidden;
   padding-top: 20px;
   margin: 20px;
   background-color: white;
