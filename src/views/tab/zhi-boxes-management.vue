@@ -4,7 +4,7 @@
       <!-- 选择title -->
       <el-input
         v-model="listQuery.title"
-        placeholder="姓名"
+        placeholder="智箱id"
         style="width: 200px;"
         class="filter-item"
         @keyup.enter.native="handleFilter"
