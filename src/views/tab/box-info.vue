@@ -3,7 +3,7 @@
     <el-row :gutter="20">
       <el-col :span="10">
         <div class="zhiBox-model">
-          <el-image style="width: 100%; height: 275px" :src="url" :fit="contain"></el-image>
+          <el-image style="width: 100%; height: 275px" :src="url"></el-image>
         </div>
       </el-col>
       <el-col :span="14">
