@@ -1,7 +1,7 @@
 import Vue from 'vue'
 
 import BaiduMap from 'vue-baidu-map'
-
+import axios from 'axios'
 
 import Cookies from 'js-cookie'
 import './styles/global.css'
@@ -53,6 +53,7 @@ Vue.use(BaiduMap, {
 
 
 Vue.config.productionTip = false
+Vue.prototype.$axios = axios;
 
 new Vue({
   el: '#app',

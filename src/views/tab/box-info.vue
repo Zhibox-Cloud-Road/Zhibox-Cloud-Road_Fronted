@@ -79,7 +79,7 @@ export default {
 .zhiBox-data {
   margin-top: 20px;
   margin-right: 20px;
-  background-color: #ccc;
+  background-color: white;
   border-radius: 4px;
   min-height: 275px;
 }

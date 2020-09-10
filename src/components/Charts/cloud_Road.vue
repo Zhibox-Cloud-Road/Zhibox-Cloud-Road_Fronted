@@ -12,16 +12,16 @@ export default {
       map: "", // 保存地图实例
       center: [
         {
-          centerLng: "117.10205", // 经度
-          centerLat: "39.09703",
+          centerLng: "117.12210", // 经度
+          centerLat: "39.15205",
         },
         {
-          centerLat1: "39.09703", // 纬度
-          centerLng1: "117.10405",
+          centerLat1: "39.09710", // 纬度
+          centerLng1: "117.15205",
         },
         {
           centerLat2: "39.09903", // 纬度
-          centerLng2: "117.10205",
+          centerLng2: "117.15205",
         },
       ],
     };
