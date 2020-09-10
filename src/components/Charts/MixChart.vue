@@ -54,7 +54,7 @@ export default {
       this.chart.setOption({
         backgroundColor: '#344b58',
         title: {
-          text: '人员与垃圾量预测',
+          text: '人流量与垃圾量预测',
           x: '20',
           top: '20',
           textStyle: {
