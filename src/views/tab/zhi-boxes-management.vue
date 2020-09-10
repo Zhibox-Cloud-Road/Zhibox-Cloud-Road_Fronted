@@ -368,8 +368,8 @@ export default {
       dialogFormVisible: false,
       dialogStatus: "",
       textMap: {
-        update: "Edit",
-        create: "Create",
+        update: "编辑",
+        create: "新建",
       },
       dialogPvVisible: false,
       pvData: [],

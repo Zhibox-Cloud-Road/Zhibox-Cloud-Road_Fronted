@@ -2,7 +2,9 @@
   <div class="zhiBox-container">
     <el-row :gutter="20">
       <el-col :span="10">
-        <div class="zhiBox-model"></div>
+        <div class="zhiBox-model">
+          <el-image style="width: 100%; height: 275px" :src="url" :fit="contain"></el-image>
+        </div>
       </el-col>
       <el-col :span="14">
         <div class="zhiBox-data">
@@ -11,7 +13,7 @@
       </el-col>
     </el-row>
     <div class="zhiBox-line">
-      <line-chart  />
+      <line-chart :chart-data="lineChartData" style="margin-left:0px;" />
     </div>
     <div class="space"></div>
   </div>
@@ -50,6 +52,8 @@ export default {
   data() {
     return {
       lineChartData: lineChartData.newVisitis,
+      url:
+        "https://6e61-natto-jpg89-1301686020.tcb.qcloud.la/Zhibox/front.png?sign=2d8118ce72a85d8c4084fda8c5f3c22d&t=1599721591",
     };
   },
   methods: {
@@ -72,7 +76,8 @@ export default {
 .zhiBox-model {
   margin-top: 20px;
   margin-left: 20px;
-  background-color: #ccc;
+  background-color: #eeeeee;
+  box-shadow: 2px 2px 5px #e2e2e2;
   border-radius: 4px;
   min-height: 275px;
 }

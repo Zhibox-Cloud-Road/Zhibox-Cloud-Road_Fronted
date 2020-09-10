@@ -40,19 +40,19 @@ export default {
   methods: {
     initChart() {
       this.chart = echarts.init(document.getElementById("123"));
-      let myColor = ["#1089E7", "#F57474", "#56D0E3", "#F8B448", "#8B78F6"];
+      let myColor = ["#D96B00", "#5a5c5b", "#359952", "#d30019", "#2f75bd"];
       // axios调用接口
       this.$axios.get("http://123.57.56.38:3001/box-data").then((response) => {
-        (this.info.push(parseInt(response.data[0].VALUME1)),
-        this.info.push(parseInt(response.data[0].VALUME2))),
-          this.info.push(parseInt(response.data[0].VALUME3)),
-          this.info.push(parseInt(response.data[0].VALUME4)),
-          this.info.push(parseInt(response.data[0].SMOKE * 100));
+        (this.info.push(parseInt(response.data[0].SMOKE * 100)),
+        this.info.push(parseInt(response.data[0].VALUME4*10/3))),
+          this.info.push(parseInt(response.data[0].VALUME3*10/3)),
+          this.info.push(parseInt(response.data[0].VALUME2*10/3)),
+          this.info.push(parseInt(response.data[0].VALUME1*10/3));
         console.log(this.info);
         // 设置进去
         this.chart.setOption({
           grid: {
-            left: "22%",
+            left: "15%",
             top: "10%",
             bottom: "10%",
             // containLabel: true
@@ -62,7 +62,7 @@ export default {
           },
           yAxis: [
             {
-              inverse:true,//是否反转坐标轴
+              inverse:false,//是否反转坐标轴
               type: "category",
               axisLine: {
                 show: false,
@@ -71,7 +71,7 @@ export default {
                 show: false,
               },
               axisLabel: {
-                color: "#1890ff",
+                color: "black",
               },
               data: [
                 "气体浓度",
@@ -90,7 +90,7 @@ export default {
                 show: false,
               },
               axisLabel: {
-                color: "#1890ff",
+                color: "#ccc",
               },
 
               data: [1000, 30, 30, 30, 30],
@@ -107,11 +107,11 @@ export default {
               // todo 柱子之间的间距
               barCategoryGap: 50,
               // 柱子的宽度
-              barWidth: 10,
+              barWidth: 20,
               // todo 修改第一组柱子的圆角
               itemStyle: {
                 normal: {
-                  barBorderRadius: 20,
+                  barBorderRadius: 5,
                   // 此时的color可以修改柱子的颜色
                   color: function (params) {
                     // console.log(params)
@@ -137,14 +137,14 @@ export default {
               barCategoryGap: 50,
               yAxisIndex: 1,
               // 柱子的宽度
-              barWidth: 15,
+              barWidth: 20,
               // todo 修改第一组柱子的圆角
               itemStyle: {
                 normal: {
                   color: "none",
-                  borderColor: "#00c1de",
-                  borderWidth: 3,
-                  barBorderRadius: 15,
+                  borderColor: "#eee",
+                  borderWidth: 1,
+                  barBorderRadius: 5,
                   // 此时的color可以修改柱子的颜色
                 },
               },

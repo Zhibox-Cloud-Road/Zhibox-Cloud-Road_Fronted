@@ -1,94 +1,180 @@
 <template>
   <div class="box-container">
     <el-row :gutter="10">
-      <el-col :span="6" >
+      <el-col :span="6">
         <div class="box-list">
-          <div class="box-pic"></div>
+          <div class="box-pic">
+            <el-image style="width: 100%; height: 100%" :src="url" :fit="contain"></el-image>
+          </div>
+          <div class="box-id">ZHIBOX-N01</div>
           <div class="data">
             <div class="data-line">
-             <div class="circle-orange"></div> 容量: 
-             <count-to :start-val='startVal' :end-val='capacity' :duration='4000' :decimals='0'  :autoplay=true />%
+              <div class="circle-orange"></div>容量:
+              <count-to
+                :start-val="startVal"
+                :end-val="capacity"
+                :duration="4000"
+                :decimals="0"
+                :autoplay="true"
+              />%
             </div>
             <div class="data-line">
-             <div class="circle-blue"></div> 温度: 
-             <count-to :start-val='startVal' :end-val='temprature' :duration='4000' :decimals='0'  :autoplay=true />℃
+              <div class="circle-blue"></div>温度:
+              <count-to
+                :start-val="startVal"
+                :end-val="temprature"
+                :duration="4000"
+                :decimals="0"
+                :autoplay="true"
+              />℃
             </div>
             <div class="data-line">
-             <div class="circle-red"></div> 气体浓度: 
-             <count-to :start-val='startVal' :end-val='smoke' :duration='4000' :decimals='0'  :autoplay=true />
+              <div class="circle-red"></div>气体浓度:
+              <count-to
+                :start-val="startVal"
+                :end-val="smoke"
+                :duration="4000"
+                :decimals="0"
+                :autoplay="true"
+              />
             </div>
           </div>
         </div>
       </el-col>
-       <el-col :span="6" >
+      <el-col :span="6">
         <div class="box-list">
-          <div class="box-pic"></div>
+          <div class="box-pic">
+            <el-image style="width: 100%; height: 100%" :src="url" :fit="contain"></el-image>
+          </div>
+          <div class="box-id">ZHIBOX-N02</div>
+
           <div class="data">
             <div class="data-line">
-             <div class="circle-orange"></div> 容量: 
-             <count-to :start-val='startVal' :end-val='capacity' :duration='4000' :decimals='0'  :autoplay=true />%
+              <div class="circle-orange"></div>容量:
+              <count-to
+                :start-val="startVal"
+                :end-val="capacity"
+                :duration="4000"
+                :decimals="0"
+                :autoplay="true"
+              />%
             </div>
             <div class="data-line">
-             <div class="circle-blue"></div> 温度: 
-             <count-to :start-val='startVal' :end-val='temprature' :duration='4000' :decimals='0'  :autoplay=true />℃
+              <div class="circle-blue"></div>温度:
+              <count-to
+                :start-val="startVal"
+                :end-val="temprature"
+                :duration="4000"
+                :decimals="0"
+                :autoplay="true"
+              />℃
             </div>
             <div class="data-line">
-             <div class="circle-red"></div> 气体浓度: 
-             <count-to :start-val='startVal' :end-val='smoke' :duration='4000' :decimals='0'  :autoplay=true />
+              <div class="circle-red"></div>气体浓度:
+              <count-to
+                :start-val="startVal"
+                :end-val="smoke"
+                :duration="4000"
+                :decimals="0"
+                :autoplay="true"
+              />
             </div>
           </div>
         </div>
       </el-col>
-       <el-col :span="6" >
+      <el-col :span="6">
         <div class="box-list">
-          <div class="box-pic"></div>
+          <div class="box-pic">
+            <el-image style="width: 100%; height: 100%" :src="url" :fit="contain"></el-image>
+          </div>
+          <div class="box-id">ZHIBOX-N03</div>
+
           <div class="data">
             <div class="data-line">
-             <div class="circle-orange"></div> 容量: 
-             <count-to :start-val='startVal' :end-val='capacity' :duration='4000' :decimals='0'  :autoplay=true />%
+              <div class="circle-orange"></div>容量:
+              <count-to
+                :start-val="startVal"
+                :end-val="capacity"
+                :duration="4000"
+                :decimals="0"
+                :autoplay="true"
+              />%
             </div>
             <div class="data-line">
-             <div class="circle-blue"></div> 温度: 
-             <count-to :start-val='startVal' :end-val='temprature' :duration='4000' :decimals='0'  :autoplay=true />℃
+              <div class="circle-blue"></div>温度:
+              <count-to
+                :start-val="startVal"
+                :end-val="temprature"
+                :duration="4000"
+                :decimals="0"
+                :autoplay="true"
+              />℃
             </div>
             <div class="data-line">
-             <div class="circle-red"></div> 气体浓度: 
-             <count-to :start-val='startVal' :end-val='smoke' :duration='4000' :decimals='0'  :autoplay=true />
+              <div class="circle-red"></div>气体浓度:
+              <count-to
+                :start-val="startVal"
+                :end-val="smoke"
+                :duration="4000"
+                :decimals="0"
+                :autoplay="true"
+              />
             </div>
           </div>
         </div>
       </el-col>
-       <el-col :span="6" >
+      <el-col :span="6">
         <div class="box-list">
-          <div class="box-pic"></div>
+          <div class="box-pic">
+            <el-image style="width: 100%; height: 100%" :src="url" :fit="contain"></el-image>
+          </div>
+          <div class="box-id">ZHIBOX-N04</div>
+
           <div class="data">
             <div class="data-line">
-             <div class="circle-orange"></div> 容量: 
-             <count-to :start-val='startVal' :end-val='capacity' :duration='4000' :decimals='0'  :autoplay=true />%
+              <div class="circle-orange"></div>容量:
+              <count-to
+                :start-val="startVal"
+                :end-val="capacity"
+                :duration="4000"
+                :decimals="0"
+                :autoplay="true"
+              />%
             </div>
             <div class="data-line">
-             <div class="circle-blue"></div> 温度: 
-             <count-to :start-val='startVal' :end-val='temprature' :duration='4000' :decimals='0'  :autoplay=true />℃
+              <div class="circle-blue"></div>温度:
+              <count-to
+                :start-val="startVal"
+                :end-val="temprature"
+                :duration="4000"
+                :decimals="0"
+                :autoplay="true"
+              />℃
             </div>
             <div class="data-line">
-             <div class="circle-red"></div> 气体浓度: 
-             <count-to :start-val='startVal' :end-val='smoke' :duration='4000' :decimals='0'  :autoplay=true />
+              <div class="circle-red"></div>气体浓度:
+              <count-to
+                :start-val="startVal"
+                :end-val="smoke"
+                :duration="4000"
+                :decimals="0"
+                :autoplay="true"
+              />
             </div>
           </div>
         </div>
       </el-col>
     </el-row>
     <div class="chart">
-      <line-chart :chart-data="lineChartData" style="margin-left:0px;"/>
+      <line-chart :chart-data="lineChartData" style="margin-left:0px;" />
     </div>
     <div class="space"></div>
   </div>
 </template>
 
 <script>
-import CountTo from 'vue-count-to'
+import CountTo from "vue-count-to";
 import LineChart from "./components/LineChart";
-
 
 const lineChartData = {
   newVisitis: {
@@ -110,22 +196,28 @@ const lineChartData = {
 };
 
 export default {
-  components: { CountTo, LineChart},
-  data () {
-      return {
-        startVal: 0,
-        capacity: 60,
-        temprature: 26,
-        smoke: 548,
-        lineChartData: lineChartData.newVisitis,
-      }
-    },
-    
+  components: { CountTo, LineChart },
+  data() {
+    return {
+      startVal: 0,
+      capacity: 60,
+      temprature: 26,
+      smoke: 548,
+      lineChartData: lineChartData.newVisitis,
+      url:
+        "https://6e61-natto-jpg89-1301686020.tcb.qcloud.la/Zhibox/side.png?sign=a77d16b279d4f2057592adbacfc463bc&t=1599722136",
+    };
+  },
 };
 </script>
 
 <style>
-.circle-red{
+.box-id{
+  text-align: center;
+  font-size: 14px;
+  color: rgb(145, 145, 145);
+}
+.circle-red {
   margin-right: 5px;
   display: inline-block;
   border-radius: 10px;
@@ -133,7 +225,7 @@ export default {
   width: 10px;
   background-color: red;
 }
-.circle-blue{
+.circle-blue {
   margin-right: 5px;
   display: inline-block;
   border-radius: 10px;
@@ -141,15 +233,15 @@ export default {
   width: 10px;
   background-color: #1890ff;
 }
-.data-line{
+.data-line {
   margin-bottom: 15px;
 }
-.data{
+.data {
   padding-top: 20px;
   padding-left: 30px;
   padding-right: 30px;
 }
-.circle-orange{
+.circle-orange {
   margin-right: 5px;
   display: inline-block;
   border-radius: 10px;
@@ -157,18 +249,18 @@ export default {
   width: 10px;
   background-color: orange;
 }
-.box-pic{
+.box-pic {
   margin: 10px;
   background-color: #f0f2f5;
   border-radius: 4px;
-  height: 130px;
+  height: 150px;
 }
-.space{
-    height: 18px;
-    background-color: #f0f2f5;
+.space {
+  height: 18px;
+  background-color: #f0f2f5;
 }
 .chart {
- padding-top: 1px;
+  padding-top: 1px;
   margin: 20px;
   background-color: white;
   border-radius: 4px;
@@ -184,7 +276,7 @@ export default {
   margin-left: 22px;
   background-color: white;
   border-radius: 4px;
-  min-height: 300px;
+  min-height: 310px;
 }
 .box-container {
   height: calc(100vh);
