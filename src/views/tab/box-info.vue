@@ -6,12 +6,12 @@
       </el-col>
       <el-col :span="14">
         <div class="zhiBox-data">
-            <info-chart></info-chart>
+          <info-chart></info-chart>
         </div>
       </el-col>
     </el-row>
     <div class="zhiBox-line">
-      <line-chart :chart-data="lineChartData" />
+      <line-chart  />
     </div>
     <div class="space"></div>
   </div>
@@ -20,7 +20,7 @@
 <script>
 // import GithubCorner from '@/components/GithubCorner'
 import LineChart from "./components/LineChart";
-import InfoChart from "./components/InfoChart"
+import InfoChart from "./components/InfoChart";
 
 const lineChartData = {
   newVisitis: {
@@ -45,7 +45,7 @@ export default {
   name: "DashboardAdmin",
   components: {
     LineChart,
-    InfoChart
+    InfoChart,
   },
   data() {
     return {
@@ -62,11 +62,12 @@ export default {
 
 
 <style>
-.space{
-    height: 0.1px;
+.space {
+  height: 0.1px;
 }
-.zhiBox-container{
-    background-color: #f0f2f5;
+.zhiBox-container {
+  height: calc(100vh);
+  background-color: #f0f2f5;
 }
 .zhiBox-model {
   margin-top: 20px;

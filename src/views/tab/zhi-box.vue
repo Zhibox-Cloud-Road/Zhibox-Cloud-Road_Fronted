@@ -89,6 +89,7 @@
 import CountTo from 'vue-count-to'
 import LineChart from "./components/LineChart";
 
+
 const lineChartData = {
   newVisitis: {
     expectedData: [100, 120, 161, 134, 105, 160, 165],
@@ -144,7 +145,7 @@ export default {
   margin-bottom: 15px;
 }
 .data{
-  padding-top: 10px;
+  padding-top: 20px;
   padding-left: 30px;
   padding-right: 30px;
 }
@@ -183,9 +184,10 @@ export default {
   margin-left: 22px;
   background-color: white;
   border-radius: 4px;
-  min-height: 275px;
+  min-height: 300px;
 }
 .box-container {
+  height: calc(100vh);
   background-color: #f0f2f5;
 }
 </style>
