@@ -53,7 +53,7 @@ export default {
     return {
       lineChartData: lineChartData.newVisitis,
       url:
-        "https://6e61-natto-jpg89-1301686020.tcb.qcloud.la/Zhibox/front.png?sign=2d8118ce72a85d8c4084fda8c5f3c22d&t=1599721591",
+        "https://6e61-natto-jpg89-1301686020.tcb.qcloud.la/Zhibox/untitled.41.png?sign=02229c8c148b7e52d6ee949fd9e89034&t=1599793225",
     };
   },
   methods: {
@@ -76,7 +76,7 @@ export default {
 .zhiBox-model {
   margin-top: 20px;
   margin-left: 20px;
-  background-color: #eeeeee;
+  background-color: white;
   box-shadow: 2px 2px 5px #e2e2e2;
   border-radius: 4px;
   min-height: 275px;

@@ -205,7 +205,7 @@ export default {
       smoke: 548,
       lineChartData: lineChartData.newVisitis,
       url:
-        "https://6e61-natto-jpg89-1301686020.tcb.qcloud.la/Zhibox/side.png?sign=a77d16b279d4f2057592adbacfc463bc&t=1599722136",
+        "https://6e61-natto-jpg89-1301686020.tcb.qcloud.la/Zhibox/untitled.32.png?sign=a6f236f38a1a98696064922a51d9b683&t=1599793109",
     };
   },
 };
@@ -251,7 +251,7 @@ export default {
 }
 .box-pic {
   margin: 10px;
-  background-color: #f0f2f5;
+  background-color: rgb(247, 247, 247);
   border-radius: 4px;
   height: 150px;
 }
