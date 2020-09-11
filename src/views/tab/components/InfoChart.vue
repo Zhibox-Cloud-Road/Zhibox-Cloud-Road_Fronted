@@ -44,10 +44,10 @@ export default {
       // axios调用接口
       this.$axios.get("http://123.57.56.38:3001/box-data").then((response) => {
         (this.info.push(parseInt(response.data[0].SMOKE * 100)),
-        this.info.push(parseInt(response.data[0].VALUME4*10/3))),
-          this.info.push(parseInt(response.data[0].VALUME3*10/3)),
-          this.info.push(parseInt(response.data[0].VALUME2*10/3)),
-          this.info.push(parseInt(response.data[0].VALUME1*10/3));
+        this.info.push(parseInt((58-response.data[0].VALUME4)*100/37))),
+          this.info.push(parseInt((58-response.data[0].VALUME3)*100/37)),
+          this.info.push(parseInt((58-response.data[0].VALUME2)*100/37)),
+          this.info.push(parseInt((58-response.data[0].VALUME1)*100/37));
         console.log(this.info);
         // 设置进去
         this.chart.setOption({
