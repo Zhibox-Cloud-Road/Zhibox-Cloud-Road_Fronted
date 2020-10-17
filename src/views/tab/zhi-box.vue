@@ -85,7 +85,7 @@
       <el-col :span="6">
         <div class="box-list">
           <div class="box-pic">
-            <el-image style="width: 100%; height: 100%" :src="url" :fit="contain"></el-image>
+            <el-image style="width: 100%; height: 100%" :src="url"></el-image>
           </div>
           <div class="box-id">ZHIBOX-N03</div>
 
