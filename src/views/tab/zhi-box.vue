@@ -4,7 +4,7 @@
       <el-col :span="6">
         <div class="box-list">
           <div class="box-pic">
-            <el-image style="width: 100%; height: 100%" :src="url" :fit="contain"></el-image>
+            <el-image style="width: 100%; height: 100%" :src="url"></el-image>
           </div>
           <div class="box-id">ZHIBOX-N01</div>
           <div class="data">
@@ -44,7 +44,7 @@
       <el-col :span="6">
         <div class="box-list">
           <div class="box-pic">
-            <el-image style="width: 100%; height: 100%" :src="url" :fit="contain"></el-image>
+            <el-image style="width: 100%; height: 100%" :src="url"></el-image>
           </div>
           <div class="box-id">ZHIBOX-N02</div>
 
@@ -53,7 +53,7 @@
               <div class="circle-orange"></div>容量:
               <count-to
                 :start-val="startVal"
-                :end-val="capacity"
+                :end-val="40"
                 :duration="4000"
                 :decimals="0"
                 :autoplay="true"
@@ -63,7 +63,7 @@
               <div class="circle-blue"></div>温度:
               <count-to
                 :start-val="startVal"
-                :end-val="temprature"
+                :end-val="29"
                 :duration="4000"
                 :decimals="0"
                 :autoplay="true"
@@ -73,7 +73,7 @@
               <div class="circle-red"></div>气体浓度:
               <count-to
                 :start-val="startVal"
-                :end-val="smoke"
+                :end-val="523"
                 :duration="4000"
                 :decimals="0"
                 :autoplay="true"
@@ -94,7 +94,7 @@
               <div class="circle-orange"></div>容量:
               <count-to
                 :start-val="startVal"
-                :end-val="capacity"
+                :end-val="80"
                 :duration="4000"
                 :decimals="0"
                 :autoplay="true"
@@ -104,7 +104,7 @@
               <div class="circle-blue"></div>温度:
               <count-to
                 :start-val="startVal"
-                :end-val="temprature"
+                :end-val="30"
                 :duration="4000"
                 :decimals="0"
                 :autoplay="true"
@@ -114,7 +114,7 @@
               <div class="circle-red"></div>气体浓度:
               <count-to
                 :start-val="startVal"
-                :end-val="smoke"
+                :end-val="534"
                 :duration="4000"
                 :decimals="0"
                 :autoplay="true"
@@ -126,7 +126,7 @@
       <el-col :span="6">
         <div class="box-list">
           <div class="box-pic">
-            <el-image style="width: 100%; height: 100%" :src="url" :fit="contain"></el-image>
+            <el-image style="width: 100%; height: 100%" :src="url"></el-image>
           </div>
           <div class="box-id">ZHIBOX-N04</div>
 
@@ -135,7 +135,7 @@
               <div class="circle-orange"></div>容量:
               <count-to
                 :start-val="startVal"
-                :end-val="capacity"
+                :end-val="45"
                 :duration="4000"
                 :decimals="0"
                 :autoplay="true"
@@ -145,7 +145,7 @@
               <div class="circle-blue"></div>温度:
               <count-to
                 :start-val="startVal"
-                :end-val="temprature"
+                :end-val="31"
                 :duration="4000"
                 :decimals="0"
                 :autoplay="true"
@@ -155,7 +155,7 @@
               <div class="circle-red"></div>气体浓度:
               <count-to
                 :start-val="startVal"
-                :end-val="smoke"
+                :end-val="546"
                 :duration="4000"
                 :decimals="0"
                 :autoplay="true"
@@ -205,7 +205,7 @@ export default {
       smoke: 548,
       lineChartData: lineChartData.newVisitis,
       url:
-        "https://6e61-natto-jpg89-1301686020.tcb.qcloud.la/Zhibox/side.png?sign=a77d16b279d4f2057592adbacfc463bc&t=1599722136",
+        "https://6e61-natto-jpg89-1301686020.tcb.qcloud.la/Zhibox/untitled.32.png?sign=a6f236f38a1a98696064922a51d9b683&t=1599793109",
     };
   },
 };
@@ -251,7 +251,7 @@ export default {
 }
 .box-pic {
   margin: 10px;
-  background-color: #f0f2f5;
+  background-color: rgb(247, 247, 247);
   border-radius: 4px;
   height: 150px;
 }

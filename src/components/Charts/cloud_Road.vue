@@ -16,12 +16,32 @@ export default {
           centerLat: "39.15205",
         },
         {
-          centerLat1: "39.09710", // 纬度
-          centerLng1: "117.15205",
+          centerLat1: "39.15405", // 纬度
+          centerLng1: "117.12310",
         },
         {
-          centerLat2: "39.09903", // 纬度
-          centerLng2: "117.15205",
+          centerLat2: "39.15705", // 纬度
+          centerLng2: "117.12310",
+        },
+        {
+          centerLat3: "39.156583", // 纬度
+          centerLng3: "117.113476",
+        },
+        {
+          centerLng4: "117.109308", // 经度
+          centerLat4: "39.149924",
+        },
+        {
+          centerLng5: "117.137335", // 经度
+          centerLat5: "39.141585",
+        },
+        {
+          centerLng6: "117.144522", // 经度
+          centerLat6: "39.163185",
+        },
+        {
+          centerLng7: "117.089905", // 经度
+          centerLat7: "39.141138",
         },
       ],
     };
@@ -50,6 +70,27 @@ export default {
         this.center[2].centerLng2,
         this.center[2].centerLat2
       );
+      let point3 = new BMap.Point(
+        this.center[3].centerLng3,
+        this.center[3].centerLat3
+      );
+      let point4 = new BMap.Point(
+        this.center[4].centerLng4,
+        this.center[4].centerLat4
+      );
+      let point5 = new BMap.Point(
+        this.center[5].centerLng5,
+        this.center[5].centerLat5
+      );
+      let point6 = new BMap.Point(
+        this.center[6].centerLng6,
+        this.center[6].centerLat6
+      );
+      let point7 = new BMap.Point(
+        this.center[7].centerLng7,
+        this.center[7].centerLat7
+      );
+      
 
       // 设置中心点坐标和地图级别
       this.map.centerAndZoom(point, 15);
@@ -61,12 +102,28 @@ export default {
       var marker = new BMap.Marker(point); // 创建标注
       var marker1 = new BMap.Marker(point1); // 创建标注
       var marker2 = new BMap.Marker(point2); // 创建标注
+      var marker3 = new BMap.Marker(point3); // 创建标注
+      var marker4 = new BMap.Marker(point4); // 创建标注
+      var marker5 = new BMap.Marker(point5); // 创建标注
+      var marker6 = new BMap.Marker(point6); // 创建标注
+      var marker7 = new BMap.Marker(point7); // 创建标注
+
       map.addOverlay(marker); // 将标注添加到地图中
       map.addOverlay(marker1); // 将标注添加到地图中
       map.addOverlay(marker2); // 将标注添加到地图中
+      map.addOverlay(marker3); // 将标注添加到地图中
+      map.addOverlay(marker4); // 将标注添加到地图中
+      map.addOverlay(marker5); // 将标注添加到地图中
+      map.addOverlay(marker6); // 将标注添加到地图中
+      map.addOverlay(marker7); // 将标注添加到地图中
       marker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
       marker1.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
       marker2.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
+      marker3.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
+      marker4.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
+      marker5.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
+      marker6.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
+      marker7.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
       // 设置地图默认缩放比例
       this.map.setZoom(15);
     },
