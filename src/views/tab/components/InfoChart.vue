@@ -1,5 +1,5 @@
 <template>
-  <div id="123" :style="{height:height,width:width}"></div>
+  <div id="123" :style="{ height: height, width: width }"></div>
 </template>
 
 <script>
@@ -42,12 +42,18 @@ export default {
       this.chart = echarts.init(document.getElementById("123"));
       let myColor = ["#D96B00", "#5a5c5b", "#359952", "#d30019", "#2f75bd"];
       // axios调用接口
-      this.$axios.get("http://123.57.56.38:3001/box-data").then((response) => {
+      this.$axios.get("http://localhost:3001/box-data").then((response) => {
         (this.info.push(parseInt(response.data[0].SMOKE * 100)),
-        this.info.push(parseInt((58-response.data[0].VALUME4)*100/37))),
-          this.info.push(parseInt((58-response.data[0].VALUME3)*100/37)),
-          this.info.push(parseInt((58-response.data[0].VALUME2)*100/37)),
-          this.info.push(parseInt((58-response.data[0].VALUME1)*100/37));
+        this.info.push(parseInt(((58 - response.data[0].VALUME4) * 100) / 37))),
+          this.info.push(
+            parseInt(((58 - response.data[0].VALUME3) * 100) / 37)
+          ),
+          this.info.push(
+            parseInt(((58 - response.data[0].VALUME2) * 100) / 37)
+          ),
+          this.info.push(
+            parseInt(((58 - response.data[0].VALUME1) * 100) / 37)
+          );
         console.log(this.info);
         // 设置进去
         this.chart.setOption({
@@ -62,7 +68,7 @@ export default {
           },
           yAxis: [
             {
-              inverse:false,//是否反转坐标轴
+              inverse: false, //是否反转坐标轴
               type: "category",
               axisLine: {
                 show: false,
