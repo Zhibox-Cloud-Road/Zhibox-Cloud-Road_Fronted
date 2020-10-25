@@ -2,14 +2,15 @@
   <div class="box-container">
     <el-row :gutter="10">
       <el-col :span="6">
-        <div class="box-list">
+        <div class="box-list" @click="handleSetLineChartData('newVisitis')">
           <div class="box-pic">
             <el-image style="width: 100%; height: 100%" :src="url"></el-image>
           </div>
           <div class="box-id">ZHIBOX-N01</div>
           <div class="data">
             <div class="data-line">
-              <div class="circle-orange"></div>容量:
+              <div class="circle-orange"></div>
+              容量:
               <count-to
                 :start-val="startVal"
                 :end-val="capacity"
@@ -19,7 +20,8 @@
               />%
             </div>
             <div class="data-line">
-              <div class="circle-blue"></div>温度:
+              <div class="circle-blue"></div>
+              温度:
               <count-to
                 :start-val="startVal"
                 :end-val="temprature"
@@ -29,7 +31,8 @@
               />℃
             </div>
             <div class="data-line">
-              <div class="circle-red"></div>气体浓度:
+              <div class="circle-red"></div>
+              气体浓度:
               <count-to
                 :start-val="startVal"
                 :end-val="smoke"
@@ -42,7 +45,7 @@
         </div>
       </el-col>
       <el-col :span="6">
-        <div class="box-list">
+        <div class="box-list" @click="handleSetLineChartData('messages')">
           <div class="box-pic">
             <el-image style="width: 100%; height: 100%" :src="url"></el-image>
           </div>
@@ -50,7 +53,8 @@
 
           <div class="data">
             <div class="data-line">
-              <div class="circle-orange"></div>容量:
+              <div class="circle-orange"></div>
+              容量:
               <count-to
                 :start-val="startVal"
                 :end-val="40"
@@ -60,7 +64,8 @@
               />%
             </div>
             <div class="data-line">
-              <div class="circle-blue"></div>温度:
+              <div class="circle-blue"></div>
+              温度:
               <count-to
                 :start-val="startVal"
                 :end-val="29"
@@ -70,7 +75,8 @@
               />℃
             </div>
             <div class="data-line">
-              <div class="circle-red"></div>气体浓度:
+              <div class="circle-red"></div>
+              气体浓度:
               <count-to
                 :start-val="startVal"
                 :end-val="523"
@@ -83,7 +89,7 @@
         </div>
       </el-col>
       <el-col :span="6">
-        <div class="box-list">
+        <div class="box-list" @click="handleSetLineChartData('purchases')">
           <div class="box-pic">
             <el-image style="width: 100%; height: 100%" :src="url"></el-image>
           </div>
@@ -91,7 +97,8 @@
 
           <div class="data">
             <div class="data-line">
-              <div class="circle-orange"></div>容量:
+              <div class="circle-orange"></div>
+              容量:
               <count-to
                 :start-val="startVal"
                 :end-val="80"
@@ -101,7 +108,8 @@
               />%
             </div>
             <div class="data-line">
-              <div class="circle-blue"></div>温度:
+              <div class="circle-blue"></div>
+              温度:
               <count-to
                 :start-val="startVal"
                 :end-val="30"
@@ -111,7 +119,8 @@
               />℃
             </div>
             <div class="data-line">
-              <div class="circle-red"></div>气体浓度:
+              <div class="circle-red"></div>
+              气体浓度:
               <count-to
                 :start-val="startVal"
                 :end-val="534"
@@ -124,7 +133,7 @@
         </div>
       </el-col>
       <el-col :span="6">
-        <div class="box-list">
+        <div class="box-list" @click="handleSetLineChartData('shoppings')">
           <div class="box-pic">
             <el-image style="width: 100%; height: 100%" :src="url"></el-image>
           </div>
@@ -132,7 +141,8 @@
 
           <div class="data">
             <div class="data-line">
-              <div class="circle-orange"></div>容量:
+              <div class="circle-orange"></div>
+              容量:
               <count-to
                 :start-val="startVal"
                 :end-val="45"
@@ -142,7 +152,8 @@
               />%
             </div>
             <div class="data-line">
-              <div class="circle-blue"></div>温度:
+              <div class="circle-blue"></div>
+              温度:
               <count-to
                 :start-val="startVal"
                 :end-val="31"
@@ -152,7 +163,8 @@
               />℃
             </div>
             <div class="data-line">
-              <div class="circle-red"></div>气体浓度:
+              <div class="circle-red"></div>
+              气体浓度:
               <count-to
                 :start-val="startVal"
                 :end-val="546"
@@ -166,7 +178,7 @@
       </el-col>
     </el-row>
     <div class="chart">
-      <line-chart :chart-data="lineChartData" style="margin-left:0px;" />
+      <line-chart :chart-data="lineChartData" style="margin-left: 0px" />
     </div>
     <div class="space"></div>
   </div>
@@ -208,11 +220,16 @@ export default {
         "https://6e61-natto-jpg89-1301686020.tcb.qcloud.la/Zhibox/untitled.32.png?sign=a6f236f38a1a98696064922a51d9b683&t=1599793109",
     };
   },
+  methods: {
+    handleSetLineChartData(type) {
+      this.lineChartData = lineChartData[type];
+    },
+  },
 };
 </script>
 
 <style>
-.box-id{
+.box-id {
   text-align: center;
   font-size: 14px;
   color: rgb(145, 145, 145);
@@ -277,6 +294,7 @@ export default {
   background-color: white;
   border-radius: 4px;
   min-height: 310px;
+  cursor: pointer;
 }
 .box-container {
   height: calc(100vh);

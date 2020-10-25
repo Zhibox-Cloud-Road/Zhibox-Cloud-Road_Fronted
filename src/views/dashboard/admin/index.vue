@@ -3,7 +3,6 @@
     <!-- <github-corner class="github-corner" /> -->
     <div style="margin-top: -15px;">
     <panel-group @handleSetLineChartData="handleSetLineChartData" />
-
     </div>
 
     <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">

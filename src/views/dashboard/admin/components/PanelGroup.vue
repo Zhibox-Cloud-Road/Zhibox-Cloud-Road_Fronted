@@ -6,10 +6,13 @@
           <svg-icon icon-class="kehuishoulaji" class-name="card-panel-icon" />
         </div>
         <div class="card-panel-description">
-          <div class="card-panel-text">
-            可回收垃圾
-          </div>
-          <count-to :start-val="0" :end-val="102400" :duration="2600"  class="card-panel-num" />
+          <div class="card-panel-text">可回收垃圾</div>
+          <count-to
+            :start-val="0"
+            :end-val="recycled"
+            :duration="2600"
+            class="card-panel-num"
+          />
           <span class="card-panel-num">吨</span>
           <!-- <count-to :start-val='0' :end-val='2017' :duration='4000' :decimals='0' :separator=',' :prefix="¥" :suffix=' rmb' :autoplay=false > -->
         </div>
@@ -21,12 +24,14 @@
           <svg-icon icon-class="youhailaji" class-name="card-panel-icon" />
         </div>
         <div class="card-panel-description">
-          <div class="card-panel-text">
-            有害垃圾
-          </div>
-          <count-to :start-val="0" :end-val="81212" :duration="3000" class="card-panel-num" />
+          <div class="card-panel-text">有害垃圾</div>
+          <count-to
+            :start-val="0"
+            :end-val="hazardous"
+            :duration="3000"
+            class="card-panel-num"
+          />
           <span class="card-panel-num">吨</span>
-
         </div>
       </div>
     </el-col>
@@ -36,12 +41,14 @@
           <svg-icon icon-class="chuyulaji" class-name="card-panel-icon" />
         </div>
         <div class="card-panel-description">
-          <div class="card-panel-text">
-            厨余垃圾
-          </div>
-          <count-to :start-val="0" :end-val="9280" :duration="3200" class="card-panel-num" />
+          <div class="card-panel-text">厨余垃圾</div>
+          <count-to
+            :start-val="0"
+            :end-val="kitchen"
+            :duration="3200"
+            class="card-panel-num"
+          />
           <span class="card-panel-num">吨</span>
-
         </div>
       </div>
     </el-col>
@@ -51,12 +58,14 @@
           <svg-icon icon-class="qitalaji" class-name="card-panel-icon" />
         </div>
         <div class="card-panel-description">
-          <div class="card-panel-text">
-            其他垃圾
-          </div>
-          <count-to :start-val="0" :end-val="13600" :duration="3600"  class="card-panel-num" />
+          <div class="card-panel-text">其他垃圾</div>
+          <count-to
+            :start-val="0"
+            :end-val="other"
+            :duration="3600"
+            class="card-panel-num"
+          />
           <span class="card-panel-num">吨</span>
-
         </div>
       </div>
     </el-col>
@@ -64,18 +73,35 @@
 </template>
 
 <script>
-import CountTo from 'vue-count-to'
+import CountTo from "vue-count-to";
 
 export default {
   components: {
-    CountTo
+    CountTo,
+  },
+  data() {
+    return {
+      recycled: "",
+      hazardous: "",
+      kitchen: "",
+      other: "",
+    };
   },
   methods: {
-    handleSetLineChartData(type) {
-      this.$emit('handleSetLineChartData', type)
-    }
-  }
-}
+    // handleSetLineChartData(type) {
+    //   this.$emit('handleSetLineChartData', type)
+    // },
+  },
+  created() {
+    this.$axios.get("http://localhost:3001/recovery").then((response) => {
+      console.log("111", response.data);
+      (this.recycled = response.data[0].recycled),
+        (this.hazardous = response.data[0].hazardous),
+        (this.kitchen = response.data[0].kitchen),
+        (this.other = response.data[0].kitchen);
+    });
+  },
+};
 </script>
 
 <style lang="scss" scoped>
@@ -94,8 +120,8 @@ export default {
     overflow: hidden;
     color: #666;
     background: #fff;
-    box-shadow: 4px 4px 40px rgba(0, 0, 0, .05);
-    border-color: rgba(0, 0, 0, .05);
+    box-shadow: 4px 4px 40px rgba(0, 0, 0, 0.05);
+    border-color: rgba(0, 0, 0, 0.05);
 
     &:hover {
       .card-panel-icon-wrapper {
@@ -115,7 +141,7 @@ export default {
       }
 
       .icon-shopping {
-        background: #5a5c5b
+        background: #5a5c5b;
       }
     }
 
@@ -132,7 +158,7 @@ export default {
     }
 
     .icon-shopping {
-      color: #5a5c5b
+      color: #5a5c5b;
     }
 
     .card-panel-icon-wrapper {
@@ -168,7 +194,7 @@ export default {
   }
 }
 
-@media (max-width:550px) {
+@media (max-width: 550px) {
   .card-panel-description {
     display: none;
   }

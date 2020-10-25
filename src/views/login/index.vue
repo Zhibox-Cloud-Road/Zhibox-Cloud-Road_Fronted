@@ -275,8 +275,8 @@ $light_gray: #eee;
   overflow: hidden;
   .login_pic {
     position: relative; //利用定位子绝父相  实现垂直居中
-    height: 1200px;
-    width: 1200px;
+    height: 1000px;
+    width: 1000px;
     background-color: #f5f6fa;
     text-align: center; //todo利用文本的水平居中属性 实现图片水平居中
     .el-image {

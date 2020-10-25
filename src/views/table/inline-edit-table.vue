@@ -8,7 +8,7 @@
       border
       fit
       highlight-current-row
-      style="width: 100%;"
+      style="width: 100%"
       @sort-change="sortChange"
     >
       <!-- id -->
@@ -17,40 +17,42 @@
         prop="id"
         sortable="custom"
         align="center"
-       width="110px"
+        width="110px"
         :class-name="getSortClass('id')"
       >
-        <template slot-scope="{row}">
+        <template slot-scope="{ row }">
           <span>{{ row.id }}</span>
         </template>
       </el-table-column>
       <!-- 注册时间 -->
       <el-table-column label="注册时间" align="center">
-        <template slot-scope="{row}">
-          <span>{{ row.timestamp | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
+        <template slot-scope="{ row }">
+          <span>{{ row.timestamp | parseTime("{y}-{m}-{d} {h}:{i}") }}</span>
         </template>
       </el-table-column>
       <!-- 姓名 -->
       <el-table-column label="姓名" width="110px" align="center">
-        <template slot-scope="{row}">
+        <template slot-scope="{ row }">
           <span>{{ row.author }}</span>
         </template>
       </el-table-column>
       <!-- 角色 -->
-      <el-table-column label="角色"  width="180px" align="center">
-        <template slot-scope="{row}">
-          <span class="link-type" @click="handleUpdate(row)">{{ row.title }}</span>
+      <el-table-column label="角色" width="180px" align="center">
+        <template slot-scope="{ row }">
+          <span class="link-type" @click="handleUpdate(row)">{{
+            row.title
+          }}</span>
           <!-- <el-tag>{{ row.type | typeFilter }}</el-tag> -->
         </template>
       </el-table-column>
       <!-- 电话 -->
       <el-table-column label="电话" width="110px" align="center">
-        <template slot-scope="{row}">
-          <span style="color:blue;">{{ row.tepL }}</span>
+        <template slot-scope="{ row }">
+          <span style="color: blue">{{ row.tepL }}</span>
         </template>
       </el-table-column>
       <el-table-column label="状态" class-name="status-col" width="120">
-        <template slot-scope="{row}">
+        <template slot-scope="{ row }">
           <el-tag :type="row.status | statusFilter">{{ row.status }}</el-tag>
         </template>
       </el-table-column>
@@ -60,37 +62,42 @@
         width="230"
         class-name="small-padding fixed-width"
       >
-        <template slot-scope="{row,$index}">
-          <el-button type="primary" size="mini" @click="handleUpdate(row)">Edit</el-button>
+        <template slot-scope="{ row, $index }">
+          <el-button type="primary" size="mini" @click="handleUpdate(row)"
+            >Edit</el-button
+          >
           <el-button
-            v-if="row.status!='published'"
+            v-if="row.status != 'published'"
             size="mini"
             type="success"
-            @click="handleModifyStatus(row,'published')"
-          >Publish</el-button>
+            @click="handleModifyStatus(row, 'published')"
+            >Publish</el-button
+          >
           <el-button
-            v-if="row.status!='draft'"
+            v-if="row.status != 'draft'"
             size="mini"
-            @click="handleModifyStatus(row,'draft')"
-          >Draft</el-button>
+            @click="handleModifyStatus(row, 'draft')"
+            >Draft</el-button
+          >
           <el-button
-            v-if="row.status!='deleted'"
+            v-if="row.status != 'deleted'"
             size="mini"
             type="danger"
-            @click="handleDelete(row,$index)"
-          >Delete</el-button>
+            @click="handleDelete(row, $index)"
+            >Delete</el-button
+          >
         </template>
       </el-table-column>
     </el-table>
-<!-- 分页组件 -->
+    <!-- 分页组件 -->
     <pagination
-      v-show="total>0"
+      v-show="total > 0"
       :total="total"
       :page.sync="listQuery.page"
       :limit.sync="listQuery.limit"
       @pagination="getList"
     />
-<!-- 对话框 -->
+    <!-- 对话框 -->
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form
         ref="dataForm"
@@ -98,7 +105,7 @@
         :model="temp"
         label-position="left"
         label-width="70px"
-        style="width: 400px; margin-left:50px;"
+        style="width: 400px; margin-left: 50px"
       >
         <!-- <el-form-item label="Type" prop="type">
           <el-select v-model="temp.type" class="filter-item" placeholder="Please select">
@@ -110,9 +117,9 @@
             />
           </el-select>
         </el-form-item> -->
-          <el-form-item label="姓名" prop="author">
+        <el-form-item label="姓名" prop="author">
           <el-input v-model="temp.author" />
-         </el-form-item>
+        </el-form-item>
         <el-form-item label="Date" prop="timestamp">
           <el-date-picker
             v-model="temp.timestamp"
@@ -124,8 +131,17 @@
           <el-input v-model="temp.title" />
         </el-form-item>
         <el-form-item label="Status">
-          <el-select v-model="temp.status" class="filter-item" placeholder="Please select">
-            <el-option v-for="item in statusOptions" :key="item" :label="item" :value="item" />
+          <el-select
+            v-model="temp.status"
+            class="filter-item"
+            placeholder="Please select"
+          >
+            <el-option
+              v-for="item in statusOptions"
+              :key="item"
+              :label="item"
+              :value="item"
+            />
           </el-select>
         </el-form-item>
         <el-form-item label="Imp">
@@ -133,13 +149,13 @@
             v-model="temp.importance"
             :colors="['#99A9BF', '#F7BA2A', '#FF9900']"
             :max="3"
-            style="margin-top:8px;"
+            style="margin-top: 8px"
           />
         </el-form-item>
         <el-form-item label="Remark">
           <el-input
             v-model="temp.remark"
-            :autosize="{ minRows: 2, maxRows: 4}"
+            :autosize="{ minRows: 2, maxRows: 4 }"
             type="textarea"
             placeholder="Please input"
           />
@@ -147,17 +163,29 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">Cancel</el-button>
-        <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">Confirm</el-button>
+        <el-button
+          type="primary"
+          @click="dialogStatus === 'create' ? createData() : updateData()"
+          >Confirm</el-button
+        >
       </div>
     </el-dialog>
 
     <el-dialog :visible.sync="dialogPvVisible" title="Reading statistics">
-      <el-table :data="pvData" border fit highlight-current-row style="width: 100%">
+      <el-table
+        :data="pvData"
+        border
+        fit
+        highlight-current-row
+        style="width: 100%"
+      >
         <el-table-column prop="key" label="Channel" />
         <el-table-column prop="pv" label="Pv" />
       </el-table>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="dialogPvVisible = false">Confirm</el-button>
+        <el-button type="primary" @click="dialogPvVisible = false"
+          >Confirm</el-button
+        >
       </span>
     </el-dialog>
   </div>
@@ -208,10 +236,21 @@ export default {
     return {
       tableKey: 0,
       list: [
-        {
-          author: '白书博',
+           {
+          author: "梅家豪",
           comment_disabled: true,
           id: 1,
+          importance: 3,
+          status: "draft",
+          // timestamp: Date.parse(new Date()),
+          timestamp: 1599484603000,
+          title: "员工",
+          tepL: "15139172789",
+        },
+        {
+          author: "付永杰",
+          comment_disabled: true,
+          id: 2,
           importance: 3,
           status: "draft",
           // timestamp: Date.parse(new Date()),
@@ -220,9 +259,9 @@ export default {
           tepL: "15139172710",
         },
         {
-          author: "郭真",
+          author: "马菀君",
           comment_disabled: true,
-          id: 2,
+          id: 3,
           importance: 3,
           pageviews: 758,
           status: "draft",
@@ -232,16 +271,38 @@ export default {
           tepL: "15139186293",
         },
         {
-          author: "付思",
+          author: "张京",
           comment_disabled: true,
-          id: 3,
+          id: 4,
           importance: 2,
           status: "draft",
           // timestamp: Date.parse(new Date()),
           timestamp: 1599484603000,
           title: "员工",
           tepL: "15139178745",
-        }
+        },
+        {
+          author: "董嘉欣",
+          comment_disabled: true,
+          id: 5,
+          importance: 2,
+          status: "draft",
+          // timestamp: Date.parse(new Date()),
+          timestamp: 1599484603000,
+          title: "员工",
+          tepL: "15139178745",
+        },
+        {
+          author: "申跨杰",
+          comment_disabled: true,
+          id: 6,
+          importance: 2,
+          status: "draft",
+          // timestamp: Date.parse(new Date()),
+          timestamp: 1599484603000,
+          title: "员工",
+          tepL: "15139178745",
+        },
       ],
       total: 0,
       listLoading: true,
