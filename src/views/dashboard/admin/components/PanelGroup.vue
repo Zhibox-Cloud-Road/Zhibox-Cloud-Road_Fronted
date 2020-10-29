@@ -98,7 +98,7 @@ export default {
       (this.recycled = response.data[0].recycled),
         (this.hazardous = response.data[0].hazardous),
         (this.kitchen = response.data[0].kitchen),
-        (this.other = response.data[0].kitchen);
+        (this.other = response.data[0].other);
     });
   },
 };

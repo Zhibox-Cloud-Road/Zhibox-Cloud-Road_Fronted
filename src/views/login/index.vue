@@ -281,10 +281,10 @@ $light_gray: #eee;
     text-align: center; //todo利用文本的水平居中属性 实现图片水平居中
     .el-image {
       position: absolute;
-      left: 20%;
-      top: 20%;
-      width: 600px;
-      height: 600px;
+      left: 15%;
+      top: 18%;
+      width: 700px;
+      // height: 600px;
     }
   }
    .login_pic1{

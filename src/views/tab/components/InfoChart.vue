@@ -23,7 +23,7 @@ export default {
   data() {
     return {
       chart: null,
-      info: [],
+      info: []
     };
   },
   created() {},
@@ -39,22 +39,26 @@ export default {
   },
   methods: {
     initChart() {
-      this.chart = echarts.init(document.getElementById("123"));
+      this.chart = echarts.init(document.getElementById("123"));//todo 获取div
       let myColor = ["#D96B00", "#5a5c5b", "#359952", "#d30019", "#2f75bd"];
       // axios调用接口
       this.$axios.get("http://localhost:3001/box-data").then((response) => {
-        (this.info.push(parseInt(response.data[0].SMOKE * 100)),
-        this.info.push(parseInt(((58 - response.data[0].VALUME4) * 100) / 37))),
+        // this.info1.push(response.data[0])
+        // console.log(this.info1)
+        this.info.push(parseInt(response.data[0].SMOKE/10)),
+        //todo 65 指的是这个桶的完整高度 
+        this.info.push(parseInt(((65 - response.data[0].VALUME4) * 100) / 65)),
           this.info.push(
-            parseInt(((58 - response.data[0].VALUME3) * 100) / 37)
+            parseInt(((65 - response.data[0].VALUME3) * 100) / 65)
           ),
           this.info.push(
-            parseInt(((58 - response.data[0].VALUME2) * 100) / 37)
+            parseInt(((65 - response.data[0].VALUME2) * 100) / 65)
           ),
           this.info.push(
-            parseInt(((58 - response.data[0].VALUME1) * 100) / 37)
+            parseInt(((65 - response.data[0].VALUME1) * 100) / 65)
           );
         console.log(this.info);
+
         // 设置进去
         this.chart.setOption({
           grid: {
@@ -107,7 +111,7 @@ export default {
             {
               name: "条",
               type: "bar",
-              //axios请求回来的数据
+              //?axios请求回来的数据
               data: this.info,
               yAxisIndex: 0,
               // todo 柱子之间的间距
